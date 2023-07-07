@@ -3,10 +3,20 @@ import { StyleSheet } from "react-native";
 import { Pressable } from "react-native";
 import { View } from "react-native";
 import { colors } from '../data/Colors'
+import { useContext } from "react";
+import { ExpenseContextModule } from "../store/ExpenseContext";
 
 export default function SingleExpense(props) {
+    const sharedData = useContext(ExpenseContextModule);
+
+
+    function deleteHandler(){
+        sharedData.getDeletedId(props.delId);
+        sharedData.toggleDeleteModel();
+    }
+
     return (
-        <Pressable style={styles.container}>
+        <Pressable style={styles.container} onPress={deleteHandler}>
             <View style={styles.textView}>
                 <Text style={styles.titleText}>{props.name}</Text>
                 <Text style={styles.dateText}>{props.date}</Text>
@@ -34,8 +44,8 @@ const styles = StyleSheet.create({
 
     },
     priceView: {
-       alignItems:"center",
-       justifyContent:"center"
+        alignItems: "center",
+        justifyContent: "center"
     },
     titleText: {
         color: colors.quaternary,
@@ -49,7 +59,7 @@ const styles = StyleSheet.create({
 
     },
     priceText: {
-        width:100,
+        width: 100,
         backgroundColor: "white",
         borderRadius: 5,
         padding: "5%",

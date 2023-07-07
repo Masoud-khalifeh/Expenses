@@ -8,6 +8,7 @@ import AddExpense from "../modals/AddExpense";
 import { ExpenseContextModule } from "../store/ExpenseContext";
 import Icon from "../components/Icon";
 import { FlatList } from "react-native";
+import DeleteExpense from "../modals/DeleteExpense";
 
 export default function AllExpenses({ navigation }) {
 
@@ -31,6 +32,7 @@ export default function AllExpenses({ navigation }) {
     return (
         <View style={styles.container}>
             {sharedData.addIsActive && <AddExpense />}
+            {sharedData.deleteIsActive&&<DeleteExpense/>}
             <View style={styles.priceShow}>
                 <Text style={styles.priceShowLeft}>Last 7 days</Text>
                 <Text style={styles.priceShowRight}>&67.6</Text>
@@ -38,7 +40,7 @@ export default function AllExpenses({ navigation }) {
             <View style={styles.expensesShow}>
                 {sharedData.expense.length ?
                     <FlatList data={sharedData.expense} keyExtractor={(item) => item.id} renderItem={({ item }) => (
-                        <SingleExpense name={item.name} date={item.date} price={item.price} />
+                        <SingleExpense name={item.name} date={item.date} price={item.price} delId={item.id} />
 
                     )} />
                     : null
