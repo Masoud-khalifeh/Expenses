@@ -34,8 +34,8 @@ export default function AllExpenses({ navigation }) {
             {sharedData.addIsActive && <AddExpense />}
             {sharedData.deleteIsActive&&<DeleteExpense/>}
             <View style={styles.priceShow}>
-                <Text style={styles.priceShowLeft}>Last 7 days</Text>
-                <Text style={styles.priceShowRight}>&67.6</Text>
+                <Text style={styles.priceShowLeft}>Last All Days</Text>
+                <Text style={styles.priceShowRight}>${sharedData.sum}</Text>
             </View>
             <View style={styles.expensesShow}>
                 {sharedData.expense.length ?
