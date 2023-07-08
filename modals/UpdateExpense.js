@@ -1,18 +1,25 @@
+import { TextInput } from "react-native";
 import { Text } from "react-native";
 import { View } from "react-native";
 import ButtonExpense from "../components/BottunExpense";
 import { StyleSheet } from "react-native";
 import { Modal } from "react-native";
 import { colors } from "../data/Colors";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { ExpenseContextModule } from "../store/ExpenseContext";
-import Icon from "../components/Icon";
 import { useEffect } from "react";
 
-export default function DeleteExpense() {
-
+export default function UpdateExpense() {
+    const [item, setItem] = useState({
+        name: "555", date: "", price: ""
+    });
 
     const sharedData = useContext(ExpenseContextModule);
+
+
+    useEffect(() => {
+        setItem({ name: sharedData.updatedExpense.name, date: sharedData.updatedExpense.date, price: sharedData.updatedExpense.price })
+    }, [])
 
     function changeHandler(itemName, value) {
 
@@ -23,16 +30,8 @@ export default function DeleteExpense() {
 
 
 
-    function UpdateHandler() {
-        sharedData.getUpdatedExpense();
-        sharedData.toggleModal(3)
-    
-    }
-
-
-
-    function deleteHandler() {
-        sharedData.deleteExpense(item);
+    function updateHandler() {
+        sharedData.addExpense(item,false);
 
     }
 
@@ -40,15 +39,16 @@ export default function DeleteExpense() {
         <Modal animationType="slide">
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>Delete or Update Expense</Text>
+                    <Text style={styles.headerText}>Update Expense</Text>
                 </View>
-
+                <View style={styles.input}>
+                    <TextInput style={styles.itemName} placeholder="Expense Name" value={item.name} onChangeText={(value) => changeHandler("name", value)} />
+                    <TextInput style={styles.date} placeholder="Date" value={item.date} onChangeText={(value) => changeHandler("date", value)} />
+                    <TextInput style={styles.price} placeholder="Price" value={item.price} onChangeText={(value) => changeHandler("price", value)} keyboardType="numeric" />
+                </View>
                 <View style={styles.buttonArea}>
-                    <ButtonExpense primary={false} onPress={() => sharedData.toggleModal(1)}>Cancel</ButtonExpense>
-                    <ButtonExpense primary={true} onPress={UpdateHandler}>Update</ButtonExpense>
-                </View>
-                <View style={styles.deleteArea}>
-                    <Icon onPress={sharedData.deleteExpense} color={"red"} size={40} name="delete" />
+                    <ButtonExpense primary={false} onPress={() => sharedData.toggleModal(2)}>Cancel</ButtonExpense>
+                    <ButtonExpense primary={true} onPress={updateHandler}>Update</ButtonExpense>
                 </View>
             </View>
         </Modal>
@@ -105,14 +105,6 @@ const styles = StyleSheet.create({
     buttonArea: {
         width: "60%",
         flexDirection: "row",
-        justifyContent: "center",
-        marginVertical: "5%"
+        justifyContent: "center"
     },
-    deleteArea: {
-        width: "80%",
-        flex: 1,
-        borderColor: colors.quaternary,
-        borderTopWidth: "3%",
-        padding: "3%"
-    }
 })

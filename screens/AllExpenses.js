@@ -9,6 +9,7 @@ import { ExpenseContextModule } from "../store/ExpenseContext";
 import Icon from "../components/Icon";
 import { FlatList } from "react-native";
 import DeleteExpense from "../modals/DeleteExpense";
+import UpdateExpense from "../modals/UpdateExpense";
 
 export default function AllExpenses({ navigation }) {
 
@@ -17,7 +18,7 @@ export default function AllExpenses({ navigation }) {
         navigation.setOptions({
             headerRight: () => {
                 return (
-                    <Icon onPress={sharedData.toggleAddModel} color={colors.quaternary} size={30} name="add" />
+                    <Icon onPress={()=>sharedData.toggleModal(0)} color={colors.quaternary} size={30} name="add" />
                 )
             }
         })
@@ -28,11 +29,11 @@ export default function AllExpenses({ navigation }) {
 
 
 
-
     return (
         <View style={styles.container}>
-            {sharedData.addIsActive && <AddExpense />}
-            {sharedData.deleteIsActive&&<DeleteExpense/>}
+            {sharedData.modal.add && <AddExpense />}
+            {sharedData.modal.delete &&<DeleteExpense/>}
+            {sharedData.modal.update&&<UpdateExpense/>}
             <View style={styles.priceShow}>
                 <Text style={styles.priceShowLeft}>Last All Days</Text>
                 <Text style={styles.priceShowRight}>${sharedData.sum}</Text>

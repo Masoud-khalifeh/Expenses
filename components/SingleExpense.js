@@ -12,7 +12,7 @@ export default function SingleExpense(props) {
 
     function deleteHandler(){
         sharedData.getDeletedId(props.delId);
-        sharedData.toggleDeleteModel();
+        sharedData.toggleModal(1);
     }
 
     return (

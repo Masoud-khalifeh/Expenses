@@ -26,7 +26,7 @@ export default function AddExpense() {
 
 
     function submitHandler() {
-        sharedData.addExpense(item);
+        sharedData.addExpense(item,true);
      
     }
 
@@ -42,7 +42,7 @@ export default function AddExpense() {
                     <TextInput style={styles.price} placeholder="Price" value={item.price} onChangeText={(value) => changeHandler("price", value)} keyboardType="numeric"/>
                 </View>
                 <View style={styles.buttonArea}>
-                    <ButtonExpense primary={false} onPress={sharedData.toggleAddModel}>Cancel</ButtonExpense>
+                    <ButtonExpense primary={false} onPress={()=>sharedData.toggleModal(0)}>Cancel</ButtonExpense>
                     <ButtonExpense primary={true} onPress={submitHandler}>Add</ButtonExpense>
                 </View>
             </View>
