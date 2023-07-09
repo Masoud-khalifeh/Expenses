@@ -28,6 +28,9 @@ export default function AddExpense() {
 
     }
 
+    function updateDate(date) {
+        setItem({ ...item, date: date.toDateString() })
+    }
 
 
     function submitHandler() {
@@ -54,13 +57,13 @@ export default function AddExpense() {
                 <View style={styles.input}>
                     <TextInput style={styles.itemName} placeholder="Expense Name" value={item.name} onChangeText={(value) => changeHandler("name", value)} />
 
-                    <Pressable onPress={()=>sharedData.toggleModal(4)}>
+                    <Pressable onPress={() => sharedData.toggleModal(4)}>
                         <Text style={styles.date}>{item.date} </Text>
-                        {sharedData.modal.showDate && <DatePicker />}
+                        {sharedData.modal.showDate && <DatePicker updateDate={updateDate} />}
                     </Pressable>
 
                     <TextInput style={styles.price} placeholder="Price" value={item.price} onChangeText={(value) => changeHandler("price", value)} keyboardType="numeric" />
-                    
+
                 </View>
                 <View style={styles.buttonArea}>
                     <ButtonExpense primary={false} onPress={() => sharedData.toggleModal(0)}>Cancel</ButtonExpense>
@@ -110,25 +113,25 @@ const styles = StyleSheet.create({
         backgroundColor: colors.quaternary,
         color: colors.primary,
         padding: "5%",
-        fontSize:15,
-        fontWeight:500,
+        fontSize: 15,
+        fontWeight: 500,
     },
     date: {
         height: 50,
         borderRadius: 5,
         backgroundColor: colors.quaternary,
         padding: "5%",
-        fontSize:15,
-        fontWeight:500,
-        color:colors.primary
+        fontSize: 15,
+        fontWeight: 500,
+        color: colors.primary
     },
     price: {
         height: 50,
         borderRadius: 5,
         backgroundColor: colors.quaternary,
         padding: "5%",
-        fontSize:15,
-        fontWeight:500,
+        fontSize: 15,
+        fontWeight: 500,
     },
 
     buttonArea: {
