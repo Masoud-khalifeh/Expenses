@@ -37,7 +37,7 @@ export default function DeleteExpense() {
     }
 
     return (
-        <Modal animationType="slide">
+        <Modal transparent={true} animationType="slide">
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Delete or Update Expense</Text>
@@ -59,7 +59,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.primary,
-        marginTop: 80,
+        marginTop: "13%",
+        borderWidth:2,
+        borderColor:"black",
         borderRadius: 10,
         alignItems: "center",
         overflow: "hidden"

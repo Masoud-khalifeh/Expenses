@@ -3,17 +3,20 @@ import { Text } from "react-native";
 import { View } from "react-native";
 import ButtonExpense from "../components/BottunExpense";
 import { StyleSheet } from "react-native";
-import { Modal } from "react-native";
+import { Modal, Pressable } from "react-native";
 import { colors } from "../data/Colors";
 import { useState, useContext } from "react";
 import { ExpenseContextModule } from "../store/ExpenseContext";
 import ErrorMessage from "../components/ErrorMessage";
+import DatePicker from "./DatePicker";
 
 export default function AddExpense() {
     const [item, setItem] = useState({
-        name: "", date: "", price: ""
+        name: "", date: new Date().toDateString(), price: ""
     });
     const [error, setError] = useState({ name: "", price: "" })
+    const [date, setDate] = useState(new Date());
+
 
     const sharedData = useContext(ExpenseContextModule);
 
@@ -24,7 +27,6 @@ export default function AddExpense() {
 
 
     }
-
 
 
 
@@ -44,15 +46,21 @@ export default function AddExpense() {
     }
 
     return (
-        <Modal animationType="slide">
+        <Modal transparent={true} animationType="slide">
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Add Expense</Text>
                 </View>
                 <View style={styles.input}>
                     <TextInput style={styles.itemName} placeholder="Expense Name" value={item.name} onChangeText={(value) => changeHandler("name", value)} />
-                    <TextInput style={styles.date} placeholder="Date" value={item.date} onChangeText={(value) => changeHandler("date", value)} />
+
+                    <Pressable onPress={()=>sharedData.toggleModal(4)}>
+                        <Text style={styles.date}>{item.date} </Text>
+                        {sharedData.modal.showDate && <DatePicker />}
+                    </Pressable>
+
                     <TextInput style={styles.price} placeholder="Price" value={item.price} onChangeText={(value) => changeHandler("price", value)} keyboardType="numeric" />
+                    
                 </View>
                 <View style={styles.buttonArea}>
                     <ButtonExpense primary={false} onPress={() => sharedData.toggleModal(0)}>Cancel</ButtonExpense>
@@ -71,7 +79,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.primary,
-        marginTop: 80,
+        marginTop: "13%",
+        borderWidth: 2,
+        borderColor: "black",
         borderRadius: 10,
         alignItems: "center",
         overflow: "hidden"
@@ -99,19 +109,26 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: colors.quaternary,
         color: colors.primary,
-        padding: "5%"
+        padding: "5%",
+        fontSize:15,
+        fontWeight:500,
     },
     date: {
         height: 50,
         borderRadius: 5,
         backgroundColor: colors.quaternary,
-        padding: "5%"
+        padding: "5%",
+        fontSize:15,
+        fontWeight:500,
+        color:colors.primary
     },
     price: {
         height: 50,
         borderRadius: 5,
         backgroundColor: colors.quaternary,
-        padding: "5%"
+        padding: "5%",
+        fontSize:15,
+        fontWeight:500,
     },
 
     buttonArea: {
@@ -119,8 +136,13 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center"
     },
-    errorArea:{
-        width:"80%",
-        marginTop:"10%"
-    }
+    errorArea: {
+        width: "80%",
+        marginTop: "10%"
+    },
+    buttonArea: {
+        width: "60%",
+        flexDirection: "row",
+        justifyContent: "center"
+    },
 })

@@ -10,7 +10,7 @@ export default function SingleExpense(props) {
     const sharedData = useContext(ExpenseContextModule);
 
 
-    function deleteHandler(){
+    function deleteHandler() {
         sharedData.getDeletedId(props.delId);
         sharedData.toggleModal(1);
     }
@@ -45,7 +45,12 @@ const styles = StyleSheet.create({
     },
     priceView: {
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        width:"25%",
+        height:"100%",
+        marginHorizontal:"1%",
+        backgroundColor: colors.quaternary,
+        borderRadius: 5,
     },
     titleText: {
         color: colors.quaternary,
@@ -60,12 +65,10 @@ const styles = StyleSheet.create({
     },
     priceText: {
         width: 100,
-        backgroundColor: "white",
-        borderRadius: 5,
         padding: "5%",
         color: colors.primary,
         fontWeight: 800,
         fontSize: 18,
-        overflow: "hidden",
+        textAlign:"center"
     }
 })

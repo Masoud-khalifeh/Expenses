@@ -9,7 +9,8 @@ export default function ExpenseContext({ children }) {
     const [deletedID, setDeletedID] = useState("");
     const [updatedExpense, setUpdatedExpense] = useState("");
     const [sum, setSum] = useState(0);
-    const [modal, setModal] = useState({ add: false, delete: false, update: false })
+    const [modal, setModal] = useState({ add: false, delete: false, update: false,showDate:false });
+    const [showDate,setShowDate]=useState(true)
 
     useEffect(() => {
         sumPrices(false)
@@ -46,7 +47,7 @@ export default function ExpenseContext({ children }) {
     }
 
 
-    function toggleModal(status,) {//o:add - 1:delete - 2:update - 3:combine 1 and 2
+    function toggleModal(status,) {//o:add - 1:delete - 2:update - 3:combine 1 and 2 - 4:showDate
 
         if (status === 0) {
             setModal({ ...modal, add: !modal.add });
@@ -54,8 +55,10 @@ export default function ExpenseContext({ children }) {
             setModal({ ...modal, delete: !modal.delete });
         } else if (status === 2) {
             setModal({ ...modal, update: !modal.update });
-        } else {
+        } else if (status === 3) {
             setModal({ ...modal, delete: !modal.delete, update: !modal.update });
+        }else {
+            setModal({ ...modal, showDate: !modal.showDate });
         }
 
 
@@ -73,7 +76,7 @@ export default function ExpenseContext({ children }) {
     return (
         <ExpenseContextModule.Provider value={{
             expense: expense, addExpense: addExpense, deleteExpense: deleteExpense, toggleModal: toggleModal, deletedID: deletedID, getDeletedId: getDeletedId,
-            sum: sum, modal: modal, getUpdatedExpense: getUpdatedExpense, updatedExpense: updatedExpense,
+            sum: sum, modal: modal, getUpdatedExpense: getUpdatedExpense, updatedExpense: updatedExpense,showDate:showDate
         }}>
             {children}
         </ExpenseContextModule.Provider>
