@@ -8,7 +8,6 @@ export default function ExpenseContext({ children }) {
     const [expense, setExpense] = useState([]);
     const [deletedID, setDeletedID] = useState("");
     const [updatedExpense, setUpdatedExpense] = useState("");
-    const [sum, setSum] = useState(0);
     const [modal, setModal] = useState({ add: false, delete: false, update: false,showDate:false });
     const [showDate,setShowDate]=useState(true)
 
@@ -18,11 +17,17 @@ export default function ExpenseContext({ children }) {
 
     function sumPrices(status) {
         let newSum = 0;
-        expense.map(item => {
-            newSum = newSum + parseInt(item.price);
+        if(status===true){
+            expense.map(item => {
+                newSum = newSum + parseInt(item.price);
+    
+            });
+        }else{
 
-        });
-        setSum(newSum);
+        }
+        
+       
+        return (newSum);
     }
 
     function getUpdatedExpense() {
@@ -76,7 +81,7 @@ export default function ExpenseContext({ children }) {
     return (
         <ExpenseContextModule.Provider value={{
             expense: expense, addExpense: addExpense, deleteExpense: deleteExpense, toggleModal: toggleModal, deletedID: deletedID, getDeletedId: getDeletedId,
-            sum: sum, modal: modal, getUpdatedExpense: getUpdatedExpense, updatedExpense: updatedExpense,showDate:showDate
+             modal: modal, getUpdatedExpense: getUpdatedExpense, updatedExpense: updatedExpense,showDate:showDate,sumPrices:sumPrices
         }}>
             {children}
         </ExpenseContextModule.Provider>
