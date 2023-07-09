@@ -7,18 +7,21 @@ import { Modal } from "react-native";
 import { colors } from "../data/Colors";
 import { useState, useContext } from "react";
 import { ExpenseContextModule } from "../store/ExpenseContext";
+import ErrorMessage from "../components/ErrorMessage";
 
 export default function AddExpense() {
     const [item, setItem] = useState({
         name: "", date: "", price: ""
     });
+    const [error, setError] = useState({ name: "", price: "" })
 
     const sharedData = useContext(ExpenseContextModule);
 
     function changeHandler(itemName, value) {
+        setError({ name: "", price: "" });
 
-        setItem({...item,[itemName]:value})
-       
+        setItem({ ...item, [itemName]: value })
+
 
     }
 
@@ -26,8 +29,18 @@ export default function AddExpense() {
 
 
     function submitHandler() {
-        sharedData.addExpense(item,true);
-     
+        if (item.name && item.price) {
+            sharedData.addExpense(item, true);
+        } else {
+            if (!item.name && !item.price) {
+                setError({ name: "Please, Fill the Name !", price: "Please, Fill the Price !" })
+            } else if (!item.name) {
+                setError({ ...error, name: "Please, Fill the Name !" })
+            } else if (!item.price) {
+                setError({ ...error, price: "Please, Fill the Price !" })
+            }
+        }
+
     }
 
     return (
@@ -39,11 +52,15 @@ export default function AddExpense() {
                 <View style={styles.input}>
                     <TextInput style={styles.itemName} placeholder="Expense Name" value={item.name} onChangeText={(value) => changeHandler("name", value)} />
                     <TextInput style={styles.date} placeholder="Date" value={item.date} onChangeText={(value) => changeHandler("date", value)} />
-                    <TextInput style={styles.price} placeholder="Price" value={item.price} onChangeText={(value) => changeHandler("price", value)} keyboardType="numeric"/>
+                    <TextInput style={styles.price} placeholder="Price" value={item.price} onChangeText={(value) => changeHandler("price", value)} keyboardType="numeric" />
                 </View>
                 <View style={styles.buttonArea}>
-                    <ButtonExpense primary={false} onPress={()=>sharedData.toggleModal(0)}>Cancel</ButtonExpense>
+                    <ButtonExpense primary={false} onPress={() => sharedData.toggleModal(0)}>Cancel</ButtonExpense>
                     <ButtonExpense primary={true} onPress={submitHandler}>Add</ButtonExpense>
+                </View>
+                <View style={styles.errorArea}>
+                    {error.name && <ErrorMessage>{error.name}</ErrorMessage>}
+                    {error.price && <ErrorMessage>{error.price}</ErrorMessage>}
                 </View>
             </View>
         </Modal>
@@ -102,4 +119,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center"
     },
+    errorArea:{
+        width:"80%",
+        marginTop:"10%"
+    }
 })
