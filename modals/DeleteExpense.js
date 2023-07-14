@@ -1,39 +1,16 @@
-import { Text } from "react-native";
-import { View } from "react-native";
+import { Text, View, StyleSheet, Modal, } from "react-native";
 import ButtonExpense from "../components/BottunExpense";
-import { StyleSheet } from "react-native";
-import { Modal } from "react-native";
 import { colors } from "../data/Colors";
 import { useContext } from "react";
 import { ExpenseContextModule } from "../store/ExpenseContext";
 import Icon from "../components/Icon";
-import { useEffect } from "react";
 
 export default function DeleteExpense() {
-
-
     const sharedData = useContext(ExpenseContextModule);
 
-    function changeHandler(itemName, value) {
-
-        setItem({ ...item, [itemName]: value })
-
-
-    }
-
-
-
     function UpdateHandler() {
-        sharedData.getUpdatedExpense();
-        sharedData.toggleModal(3)
-    
-    }
-
-
-
-    function deleteHandler() {
-        sharedData.deleteExpense(item);
-
+        sharedData.getUpdatedExpense();// call the function to delete 
+        sharedData.toggleModal(3); //closes the Delete or update Modal
     }
 
     return (

@@ -1,3 +1,6 @@
+
+//define reusable colors for the whole project
+
 export const colors ={
     primary:"#2d0589",
     secondary:"#3518b7",

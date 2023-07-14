@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text } from "react-native";
 import { colors } from "../data/Colors";
 
+//define a pressable area as a reusable Button
 export default function ButtonExpense({ children,primary,onPress }) {
 
     return (

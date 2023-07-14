@@ -5,22 +5,25 @@ import { colors } from '../data/Colors';
 import ButtonExpense from "../components/BottunExpense";
 import { ExpenseContextModule } from '../store/ExpenseContext';
 
+
+//define a reusable component for getting the Date from user
 export default function DatePicker(props) {
   const [date, setDate] = useState(new Date());
   const sharedData = useContext(ExpenseContextModule);
+  const currentDate=new Date()
 
   function submitHandler() {
-    sharedData.toggleModal(4);
+    sharedData.toggleModal(4); //closes the DatePicker Modal
     props.updateDate(date)
   }
-
-
 
   return (
     <Modal transparent={true} animationType='slide'>
       <View style={styles.container}>
         <DateTimePicker
           mode="date"
+          // minimumDate={new Date(currentDate.getTime()- 92*24*60*60*1000)} //by activating this part we can limit the minimum of selected date
+          maximumDate={currentDate}
           textColor={colors.quaternary}
           display="spinner"
           open={true}

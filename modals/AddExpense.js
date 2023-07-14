@@ -1,41 +1,34 @@
-import { TextInput } from "react-native";
-import { Text } from "react-native";
-import { View } from "react-native";
+import { TextInput, Text, View, StyleSheet, Modal, Pressable } from "react-native";
 import ButtonExpense from "../components/BottunExpense";
-import { StyleSheet } from "react-native";
-import { Modal, Pressable } from "react-native";
 import { colors } from "../data/Colors";
 import { useState, useContext } from "react";
 import { ExpenseContextModule } from "../store/ExpenseContext";
 import ErrorMessage from "../components/ErrorMessage";
 import DatePicker from "./DatePicker";
 
-export default function AddExpense() {
+export default function AddExpense(props) {
     const [item, setItem] = useState({
-        name: "", date: new Date().toDateString(), price: ""
+        name: "", date: new Date(), price: ""
     });
     const [error, setError] = useState({ name: "", price: "" })
-    const [date, setDate] = useState(new Date());
-
-
     const sharedData = useContext(ExpenseContextModule);
 
-    function changeHandler(itemName, value) {
-        setError({ name: "", price: "" });
-
-        setItem({ ...item, [itemName]: value })
-
-
+    function changeHandler(itemName, value) { 
+        setError({ name: "", price: "" }); //by changing the input, the error messages will vanish
+        setItem({ ...item, [itemName]: value }) //by changing the input, the state will update
     }
 
     function updateDate(date) {
-        setItem({ ...item, date: date.toDateString() })
+        setItem({ ...item, date: date }) // by confirming the date picker, the state will be updated
     }
 
 
     function submitHandler() {
-        if (item.name && item.price) {
-            sharedData.addExpense(item, true);
+        if (item.name && item.price) { //check if the inputes are empty or not
+            sharedData.addExpense(item, true); //with argument true we do add not update
+            if (props.redirect) { //if the addExpense is called from RecentExpenses, it will redirect it to AllExpenses
+                props.redirect()
+            }
         } else {
             if (!item.name && !item.price) {
                 setError({ name: "Please, Fill the Name !", price: "Please, Fill the Price !" })
@@ -45,7 +38,6 @@ export default function AddExpense() {
                 setError({ ...error, price: "Please, Fill the Price !" })
             }
         }
-
     }
 
     return (
@@ -56,14 +48,11 @@ export default function AddExpense() {
                 </View>
                 <View style={styles.input}>
                     <TextInput style={styles.itemName} placeholder="Expense Name" value={item.name} onChangeText={(value) => changeHandler("name", value)} />
-
                     <Pressable onPress={() => sharedData.toggleModal(4)}>
-                        <Text style={styles.date}>{item.date} </Text>
-                        {sharedData.modal.showDate && <DatePicker updateDate={updateDate} />}
+                        <Text style={styles.date}>{item.date.toDateString()} </Text>
+                        {sharedData.modal.showDate && <DatePicker updateDate={updateDate} />} 
                     </Pressable>
-
                     <TextInput style={styles.price} placeholder="Price" value={item.price} onChangeText={(value) => changeHandler("price", value)} keyboardType="numeric" />
-
                 </View>
                 <View style={styles.buttonArea}>
                     <ButtonExpense primary={false} onPress={() => sharedData.toggleModal(0)}>Cancel</ButtonExpense>
