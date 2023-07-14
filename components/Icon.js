@@ -1,5 +1,5 @@
 import { Pressable, StyleSheet } from "react-native";
-import { Icon } from '@rneui/themed';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 //define a reusable component for icons
 export default function IconNative({ onPress, name = "star", size = 24, color = "black" }) {

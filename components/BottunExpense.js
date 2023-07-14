@@ -14,6 +14,7 @@ export default function ButtonExpense({ children,primary,onPress }) {
 
 const styles = StyleSheet.create({
     container: {
+        width:"100%",
         flex: 1,
         height:50,
         justifyContent:"center",
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
         color: colors.quaternary,
         padding:"5%",
         textAlign:"center",
-        fontSize:15,
-        fontWeight:500
+        fontSize:17,
+        fontWeight:600
     }
 })

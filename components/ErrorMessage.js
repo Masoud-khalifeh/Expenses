@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: colors.prime,
-        padding:"5%",
+        padding:"2%",
         fontSize:15,
         fontWeight:700
     }

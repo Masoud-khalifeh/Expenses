@@ -17,7 +17,15 @@ export default function RecentExpenses({ navigation }) {
         navigation.setOptions({
             headerRight: () => {
                 return (
-                    <Icon onPress={() => sharedData.toggleModal(0)} color={colors.quaternary} size={30} name="add" />
+                    <Icon onPress={() => sharedData.toggleModal(0)} color={colors.quaternary} size={25} name="plus" />
+                )
+            },
+            headerLeft: () => {
+                return (
+                    <View style={styles.header}>
+                        <Text style={styles.headerText}>{sharedData.loggedUser.name}</Text>
+                        <Icon onPress={() => { sharedData.signout(); navigation.navigate("Login") }} color={colors.quaternary} size={30} name="sign-out" />
+                    </View>
                 )
             }
         })
@@ -79,5 +87,15 @@ const styles = StyleSheet.create({
     expensesShow: {
         width: "90%",
         height: "90%"
+    },
+    header:{
+        flexDirection:"row",
+        paddingHorizontal:"10%",
+        alignItems:"center"
+    },
+    headerText:{
+        color:colors.quaternary,
+        maxWidth:"55%",
+        fontSize:15
     }
 })
