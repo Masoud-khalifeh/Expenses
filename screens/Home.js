@@ -2,13 +2,14 @@ import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../data/Colors';
 import ButtonExpense from '../components/BottunExpense';
 
+
 export default function Home({navigation}) {
 
     return (
         <View style={styles.container}>
             <View style={styles.message}>
                     <Text style={styles.topText}>
-                        Welcomme !
+                        Welcome !
                     </Text>
                     <Text style={styles.bottomText}>
                         You must login First !!
@@ -18,8 +19,6 @@ export default function Home({navigation}) {
                 <ButtonExpense primary={false} onPress={()=> navigation.navigate('SignUp')}>Sign UP</ButtonExpense>
                 <ButtonExpense primary={true} onPress={()=> navigation.navigate('Login')}>Login</ButtonExpense>
             </View>
-
-
         </View>
     )
 }

@@ -44,7 +44,6 @@ export default function Login({ navigation }) {
                     <ErrorMessage>{item}</ErrorMessage>
                 )} />
             </View>
-
             <View style={styles.inputArea}>
                 <TextInput placeholder="Email" placeholderTextColor={colors.secondary} style={styles.input} name="email" value={user.email} onChangeText={(value) => changeHandler("email", value)} />
                 <TextInput secureTextEntry={true} placeholder="PassWord" placeholderTextColor={colors.secondary} style={styles.input} name="passWord" value={user.passWord} onChangeText={(value) => changeHandler("passWord", value)} />
@@ -53,8 +52,6 @@ export default function Login({ navigation }) {
                 <ButtonExpense primary={true} onPress={submitHandler}>Login</ButtonExpense>
                 <ButtonExpense primary={false} onPress={() => navigation.navigate('SignUp')}>new? Create an <Text style={styles.bottomText}>Account</Text> </ButtonExpense>
             </View>
-
-
         </View>
     )
 }
