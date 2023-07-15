@@ -28,17 +28,14 @@ export default function Login({ navigation }) {
         if (user.email && user.passWord && user.name) {
             if (user.passWord !== user.repeatPassWord) {
                 error.push("PassWord does not Match !")
-            } else {
-                
+            } else {                
                 if(sharedData.SignUp(user)){
                     navigation.navigate("AllExpenses")
                 }else{
                     error.push("The Email Already Exists !")
                 }
-                setUser({ email: '', passWord: '' })
-                
+                setUser({ email: '', passWord: '' })                
             }
-
         } else {
             if (!user.passWord) {
                 error.push("Please Fill the PassWord")
@@ -51,7 +48,6 @@ export default function Login({ navigation }) {
             }
         }
         setError(error)
-
     }
 
     return (
@@ -71,8 +67,6 @@ export default function Login({ navigation }) {
                 <ButtonExpense primary={true} onPress={submitHandler}>Sign Up</ButtonExpense>
                 <ButtonExpense primary={false} onPress={() => navigation.navigate('Login')}><Text style={styles.topText}> Already Have an Account? <Text style={styles.bottomText}>Login</Text> </Text></ButtonExpense>
             </View>
-
-
         </View>
     )
 }
