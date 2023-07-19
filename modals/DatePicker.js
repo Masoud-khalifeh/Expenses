@@ -2,7 +2,7 @@ import { useState, useContext } from 'react';
 import { Modal, View, StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { colors } from '../data/Colors';
-import ButtonExpense from "../components/BottunExpense";
+import ButtonExpense from "../components/ButtonExpense";
 import { ExpenseContextModule } from '../store/ExpenseContext';
 
 

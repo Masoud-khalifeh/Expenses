@@ -1,19 +1,20 @@
 import { TextInput, Text, View, StyleSheet, Modal, Pressable } from "react-native";
-import ButtonExpense from "../components/BottunExpense";
+import ButtonExpense from "../components/ButtonExpense";
 import { colors } from "../data/Colors";
 import { useState, useContext } from "react";
 import { ExpenseContextModule } from "../store/ExpenseContext";
 import ErrorMessage from "../components/ErrorMessage";
 import DatePicker from "./DatePicker";
+import ImagePicker from "../components/ImagePicker";
 
 export default function AddExpense(props) {
     const [item, setItem] = useState({
-        name: "", date: new Date(), price: ""
+        name: "", date: new Date(), price: "", imageURI: ""
     });
     const [error, setError] = useState({ name: "", price: "" })
     const sharedData = useContext(ExpenseContextModule);
 
-    function changeHandler(itemName, value) { 
+    function changeHandler(itemName, value) {
         setError({ name: "", price: "" }); //by changing the input, the error messages will vanish
         setItem({ ...item, [itemName]: value }) //by changing the input, the state will update
     }
@@ -21,6 +22,11 @@ export default function AddExpense(props) {
     function updateDate(date) {
         setItem({ ...item, date: date }) // by confirming the date picker, the state will be updated
     }
+
+    function updateImage(uri) {
+        setItem({ ...item, imageURI: uri })
+    }
+
 
 
     function submitHandler() {
@@ -50,9 +56,12 @@ export default function AddExpense(props) {
                     <TextInput style={styles.itemName} placeholder="Expense Name" value={item.name} onChangeText={(value) => changeHandler("name", value)} />
                     <Pressable onPress={() => sharedData.toggleModal(4)}>
                         <Text style={styles.date}>{item.date.toDateString()} </Text>
-                        {sharedData.modal.showDate && <DatePicker updateDate={updateDate} />} 
+                        {sharedData.modal.showDate && <DatePicker updateDate={updateDate} />}
                     </Pressable>
                     <TextInput style={styles.price} placeholder="Price" value={item.price} onChangeText={(value) => changeHandler("price", value)} keyboardType="numeric" />
+                </View>
+                <View style={styles.image}>
+                    <ImagePicker updateImage={updateImage} />
                 </View>
                 <View style={styles.buttonArea}>
                     <ButtonExpense primary={false} onPress={() => sharedData.toggleModal(0)}>Cancel</ButtonExpense>
@@ -62,6 +71,7 @@ export default function AddExpense(props) {
                     {error.name && <ErrorMessage>{error.name}</ErrorMessage>}
                     {error.price && <ErrorMessage>{error.price}</ErrorMessage>}
                 </View>
+
             </View>
         </Modal>
     )
@@ -137,4 +147,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center"
     },
+    image:{
+        height:"30%"
+    }
 })

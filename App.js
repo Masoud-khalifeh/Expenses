@@ -30,7 +30,7 @@ function TabLoader() {
 export default function App() {
   return (
     <>
-      <StatusBar style='auto' />
+      <StatusBar style='light' />
       <ExpenseContext>
         <CurrencyContext>
           <NavigationContainer>

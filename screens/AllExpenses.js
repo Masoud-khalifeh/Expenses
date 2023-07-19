@@ -30,6 +30,7 @@ export default function AllExpenses({ navigation }) {
             }
         })
     }, [])
+    
 
     return (
         <View style={styles.container}>

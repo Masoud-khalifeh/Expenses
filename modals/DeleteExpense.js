@@ -1,5 +1,5 @@
 import { Text, View, StyleSheet, Modal, } from "react-native";
-import ButtonExpense from "../components/BottunExpense";
+import ButtonExpense from "../components/ButtonExpense";
 import { colors } from "../data/Colors";
 import { useContext } from "react";
 import { ExpenseContextModule } from "../store/ExpenseContext";

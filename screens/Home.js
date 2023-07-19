@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../data/Colors';
-import ButtonExpense from '../components/BottunExpense';
+import ButtonExpense from '../components/ButtonExpense';
 
 
 export default function Home({navigation}) {

@@ -2,7 +2,7 @@
 import { View, Text, StyleSheet, TextInput, FlatList } from 'react-native';
 import { ExpenseContextModule } from '../store/ExpenseContext';
 import { colors } from '../data/Colors';
-import ButtonExpense from '../components/BottunExpense';
+import ButtonExpense from '../components/ButtonExpense';
 import { useContext, useState } from 'react';
 import ErrorMessage from '../components/ErrorMessage';
 
