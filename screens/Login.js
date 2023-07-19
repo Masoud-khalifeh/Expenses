@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TextInput, FlatList } from 'react-native';
 import { colors } from '../data/Colors';
 import ButtonExpense from '../components/ButtonExpense';
 import { ExpenseContextModule } from '../store/ExpenseContext';
-import { useContext, useState } from 'react';
+import { useContext, useState, } from 'react';
 import ErrorMessage from '../components/ErrorMessage';
 
 
@@ -10,7 +10,7 @@ import ErrorMessage from '../components/ErrorMessage';
 export default function Login({ navigation }) {
     const sharedData = useContext(ExpenseContextModule);
     const [user, setUser] = useState({ email: '', passWord: '' });
-    const [error, setError] = useState([])
+    const [error, setError] = useState([]);
 
     function changeHandler(name, value) {
         setError([])
@@ -24,7 +24,7 @@ export default function Login({ navigation }) {
             if( sharedData.login(user)){
                 navigation.navigate("AllExpenses")
             }else{
-                error.push("The Wrong Email or PassWord  !")
+                error.push("Wrong Email or PassWord  !")
             }
            
         } else if (user.passWord) {
@@ -34,19 +34,20 @@ export default function Login({ navigation }) {
         } else {
             error.push(...["Please Fill the User Name", "Please Fill the PassWord"])
         }
-        setError(error)
+        setError(error);
+
     }
 
     return (
         <View style={styles.container}>
             <View style={[styles.errorMessage,{display:(error.length)? "flex" : "none"}]}>
-                <FlatList data={error}  renderItem={({ item }) => (
+                <FlatList justifyContent="center" data={error}  renderItem={({ item }) => (
                     <ErrorMessage>{item}</ErrorMessage>
                 )} />
             </View>
             <View style={styles.inputArea}>
                 <TextInput placeholder="Email" placeholderTextColor={colors.secondary} style={styles.input} name="email" value={user.email} onChangeText={(value) => changeHandler("email", value)} />
-                <TextInput secureTextEntry={true} placeholder="PassWord" placeholderTextColor={colors.secondary} style={styles.input} name="passWord" value={user.passWord} onChangeText={(value) => changeHandler("passWord", value)} />
+                <TextInput secureTextEntry={true} placeholder="Password" placeholderTextColor={colors.secondary} style={styles.input} name="passWord" value={user.passWord} onChangeText={(value) => changeHandler("passWord", value)} />
             </View>
             <View style={styles.buttonView}>
                 <ButtonExpense primary={true} onPress={submitHandler}>Login</ButtonExpense>
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     errorMessage: {
-        maxHeight: "15%",
+        maxHeight: "10%",
         paddingTop: "5%",
         justifyContent: "flex-end"
     },

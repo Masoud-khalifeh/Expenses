@@ -32,6 +32,11 @@ function ImagePicker(props) {
       aspect: [16, 9],
       quality: 0.5
     });
+
+    // The user canceled to take a photo
+    if (image.canceled) {
+      return;
+    }
     setPickedImage(image.assets[0].uri);
     props.updateImage(image.assets[0].uri);
   }
@@ -43,7 +48,7 @@ function ImagePicker(props) {
 
       </View>
       <View style={styles.imageButton}>
-        <ButtonExpense onPress={takeImageHandler} primary={true}>Take Image</ButtonExpense>
+        <ButtonExpense onPress={takeImageHandler} primary={true} icon={{ name: 'camera', size: 30, color: colors.quaternary }}> Take Image</ButtonExpense>
       </View>
     </View>
   )
