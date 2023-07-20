@@ -66,8 +66,8 @@ function LocationPicker(props) {
 
             </View>
             <View style={styles.imageButton}>
-                <ButtonExpense onPress={mapLocatinHandler} primary={false} icon={{ name: 'map', size: 20, color: colors.quaternary }}> Pick on Map</ButtonExpense>
-                <ButtonExpense onPress={currentLocatinHandler} primary={true} icon={{ name: 'location-arrow', size: 20, color: colors.quaternary }}> Locate User</ButtonExpense>
+                <ButtonExpense onPress={mapLocatinHandler} primary={false} icon={{ name: 'map', size: 20, color: colors.quaternary }} textSize={15} > Pick on Map</ButtonExpense>
+                <ButtonExpense onPress={currentLocatinHandler} primary={true} icon={{ name: 'location', size: 20, color: colors.quaternary }}  textSize={15}> Locate User</ButtonExpense>
             </View>
         </View>
     )

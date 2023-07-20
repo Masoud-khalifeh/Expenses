@@ -25,7 +25,7 @@ export default function DeleteExpense() {
                     <ButtonExpense primary={true} onPress={UpdateHandler}>Update</ButtonExpense>
                 </View>
                 <View style={styles.deleteArea}>
-                    <Icon onPress={sharedData.deleteExpense} color={"red"} size={40} name="delete" />
+                    <Icon onPress={sharedData.deleteExpense} color="red" size={40} name="trash" />
                 </View>
             </View>
         </Modal>
@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
         flex: 1,
         borderColor: colors.quaternary,
         borderTopWidth: "3%",
-        padding: "3%"
+        padding: "3%",
+        alignItems:"center"
     }
 })
