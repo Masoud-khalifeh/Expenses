@@ -64,7 +64,7 @@ export default function AddExpense(props) {
                     <TextInput style={styles.price} placeholder="Price" value={item.price} onChangeText={(value) => changeHandler("price", value)} keyboardType="numeric" />
                 </View>
                 <View style={styles.image}>
-                    <ImagePicker updateImage={updateImage} />
+                    <ImagePicker updateImage={updateImage} oldImageURL={null} />
                 </View>
                 <View style={styles.image}>
                     <LocationPicker updateLocation={updateLocation} />

@@ -6,18 +6,21 @@ import { ExpenseContextModule } from "../store/ExpenseContext";
 import { useEffect } from "react";
 import DatePicker from "./DatePicker";
 import ErrorMessage from "../components/ErrorMessage";
+import ImagePicker from "../components/ImagePicker";
+import LocationPicker from '../components/LocationPicker'
 
 
 export default function UpdateExpense() {
     const [item, setItem] = useState({
-        name: "", date: new Date(), price: ""
+        name: "", date: new Date(), price: "", imageURI: "", location:"",
     });
     const [error, setError] = useState({ name: "", price: "" })
     const sharedData = useContext(ExpenseContextModule);
 
     //get the initial amount for update
     useEffect(() => { 
-        setItem({ name: sharedData.updatedExpense.name, date: sharedData.updatedExpense.date, price: sharedData.updatedExpense.price })
+        setItem({ name: sharedData.updatedExpense.name, date: sharedData.updatedExpense.date, price: sharedData.updatedExpense.price,
+             imageURI:sharedData.updatedExpense.imageURI, location:sharedData.updatedExpense.location })
     }, [])
 
     function changeHandler(itemName, value) {
@@ -28,6 +31,15 @@ export default function UpdateExpense() {
     function updateDate(date) {
         setItem({ ...item, date: date }) // by confirming the date picker, the state will be updated
     }
+
+    function updateImage(uri) {
+        setItem({ ...item, imageURI: uri })
+    }
+
+    function updateLocation(loc,address) {
+        setItem({ ...item, location: loc, address:address })
+    }
+
 
     function updateHandler() {
         if (item.name && item.price) { //check if the inputes are empty or not
@@ -56,6 +68,12 @@ export default function UpdateExpense() {
                         {sharedData.modal.showDate && <DatePicker updateDate={updateDate} />}
                     </Pressable>
                     <TextInput style={styles.price} placeholder="Price" value={item.price} onChangeText={(value) => changeHandler("price", value)} keyboardType="numeric" />
+                </View>
+                <View style={styles.image}>
+                    <ImagePicker updateImage={updateImage} oldImageURL={item.imageURI}/>
+                </View>
+                <View style={styles.image}>
+                    <LocationPicker updateLocation={updateLocation} oldLocationURL={item.location} />
                 </View>
                 <View style={styles.buttonArea}>
                     <ButtonExpense primary={false} onPress={() => sharedData.toggleModal(2)}>Cancel</ButtonExpense>
@@ -128,4 +146,7 @@ const styles = StyleSheet.create({
         width: "80%",
         marginTop: "10%"
     },
+    image:{
+        height:"25%"
+    }
 })

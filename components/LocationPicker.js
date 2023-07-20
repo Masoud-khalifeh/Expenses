@@ -25,7 +25,6 @@ function LocationPicker(props) {
         return true;
     };
 
-
     async function currentLocatinHandler() {
         const hasPermission = await verifyPermission();
         if (!hasPermission) {
@@ -34,8 +33,6 @@ function LocationPicker(props) {
 
         const location = await getCurrentPositionAsync();
         setPickedLocation({ lat: location.coords.latitude, lon: location.coords.longitude });
-
-        // props.updateLocation({lat:location.coords.latitude,lon:location.coords.longitude})
     }
 
     useEffect(() => {
@@ -51,7 +48,7 @@ function LocationPicker(props) {
 
     useEffect(() => {
         if (address) {
-            props.updateLocation({...pickedLocation},address)
+            props.updateLocation({ ...pickedLocation }, address)
         }
     }, [address])
 
@@ -62,12 +59,20 @@ function LocationPicker(props) {
     return (
         <View style={styles.container}>
             <View style={styles.preview}>
-                {pickedLocation ? <Image source={{ uri: getMapPreview(pickedLocation.lat, pickedLocation.lon) }} style={styles.image} /> : <Text style={styles.text}>No Location taken yet.</Text>}
+                {pickedLocation || props.oldLocationURL ?
+                    <Image source={{
+                        uri: pickedLocation ?
+                            getMapPreview(pickedLocation.lat, pickedLocation.lon)
+                            :
+                            getMapPreview(props.oldLocationURL.lat, props.oldLocationURL.lon)
+                    }} style={styles.image} />
+                    :
+                    <Text style={styles.text}>No Location taken yet.</Text>}
 
             </View>
             <View style={styles.imageButton}>
                 <ButtonExpense onPress={mapLocatinHandler} primary={false} icon={{ name: 'map', size: 20, color: colors.quaternary }} textSize={15} > Pick on Map</ButtonExpense>
-                <ButtonExpense onPress={currentLocatinHandler} primary={true} icon={{ name: 'location', size: 20, color: colors.quaternary }}  textSize={15}> Locate User</ButtonExpense>
+                <ButtonExpense onPress={currentLocatinHandler} primary={true} icon={{ name: 'location', size: 20, color: colors.quaternary }} textSize={15}> Locate User</ButtonExpense>
             </View>
         </View>
     )

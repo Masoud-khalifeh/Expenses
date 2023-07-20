@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Alert, Image, StyleSheet, Text } from 'react-native'
 import ButtonExpense from './ButtonExpense';
 import { launchCameraAsync, useCameraPermissions, PermissionStatus } from 'expo-image-picker';
@@ -8,7 +8,7 @@ import { colors } from '../data/Colors';
 function ImagePicker(props) {
 
   const [pickedImage, setPickedImage] = useState();
-  const [cameraPermissionInformation, requestPermission] = useCameraPermissions()
+  const [cameraPermissionInformation, requestPermission] = useCameraPermissions();
 
   async function verifyPermission() {
     if (cameraPermissionInformation.status === PermissionStatus.UNDETERMINED) {
@@ -44,7 +44,7 @@ function ImagePicker(props) {
   return (
     <View style={styles.container}>
       <View style={styles.preview}>
-        {pickedImage ? <Image source={{ uri: pickedImage }} style={styles.image} /> : <Text style={styles.text}>No image taken yet.</Text>}
+        {pickedImage||props.oldImageURL ? <Image source={{ uri: pickedImage?pickedImage:props.oldImageURL }} style={styles.image} /> : <Text style={styles.text}>No image taken yet.</Text>}
 
       </View>
       <View style={styles.imageButton}>
