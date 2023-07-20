@@ -44,7 +44,7 @@ export default function AllExpenses({ navigation }) {
             <View style={styles.expensesShow}>
                 {sharedData.expense.length ?
                     <FlatList data={sharedData.expense.sort((a, b) => new Date(b.date) - new Date(a.date))} keyExtractor={(item) => item.id} renderItem={({ item }) => (
-                        <SingleExpense name={item.name} date={item.date} price={item.price} delId={item.id} />
+                        <SingleExpense name={item.name} date={item.date} price={item.price} delId={item.id} location={item.location} imageURI={item.imageURI} address={item.address} />
 
                     )} />
                     : null

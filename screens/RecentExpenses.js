@@ -48,7 +48,7 @@ export default function RecentExpenses({ navigation }) {
             <View style={styles.expensesShow}>
                 {sharedData.shortlistExpense ?
                     <FlatList data={sharedData.shortlistExpense} keyExtractor={(item) => item.id} renderItem={({ item }) => (
-                        <SingleExpense name={item.name} date={item.date} price={item.price} delId={item.id} />
+                        <SingleExpense name={item.name} date={item.date} price={item.price} delId={item.id} location={item.location} imageURI={item.imageURI} address={item.address} />
                     )} />
                     : null
                 }

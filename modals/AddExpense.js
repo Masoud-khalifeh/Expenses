@@ -10,7 +10,7 @@ import LocationPicker from '../components/LocationPicker'
 
 export default function AddExpense(props) {
     const [item, setItem] = useState({
-        name: "", date: new Date(), price: "", imageURI: "", location:""
+        name: "", date: new Date(), price: "", imageURI: "", location:"", address:""
     });
     const [error, setError] = useState({ name: "", price: "" })
     const sharedData = useContext(ExpenseContextModule);

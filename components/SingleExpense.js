@@ -1,14 +1,15 @@
-import { Text, StyleSheet, Pressable, View,} from "react-native";
+import { Text, StyleSheet, Pressable, View, Image } from "react-native";
 import { colors } from '../data/Colors'
 import { useContext } from "react";
 import { ExpenseContextModule } from "../store/ExpenseContext";
+import { getMapPreview } from "../utility/Location";
 
 
 //define a reusable component to show each expense
 export default function SingleExpense(props) {
     const sharedData = useContext(ExpenseContextModule);
 
-    
+
     function deleteHandler() {
         sharedData.getDeletedId(props.delId); //save the id of singleExpenseComponent for the update and delete
         sharedData.toggleModal(1); //by pressing each singleExpenseComponent, another modal will be open to delete or update
@@ -16,13 +17,27 @@ export default function SingleExpense(props) {
 
     return (
         <Pressable style={styles.container} onPress={deleteHandler}>
-            <View style={styles.textView}>
-                <Text style={styles.titleText}>{props.name}</Text>
-                <Text style={styles.dateText}>{props.date.toDateString()}</Text>
+            <View style={styles.top}>
+                <View style={styles.textView}>
+                    <Text style={styles.titleText}>{props.name}</Text>
+                    <Text style={styles.dateText}>{props.date.toDateString()}</Text>
+                    <Text style={styles.dateText}>{props.address}</Text>
+                </View>
+                <View style={styles.priceView}>
+                    <Text style={styles.priceText}>{props.price}</Text>
+                </View>
             </View>
-            <View style={styles.priceView}>
-                <Text style={styles.priceText}>{props.price}</Text>
+
+            <View style={styles.bottom}>
+                <View style={styles.preview}>
+                    {props.imageURI ? <Image source={{ uri: props.imageURI }} style={styles.image} /> : <Text style={styles.text}>Photo Not Available!</Text>}
+                </View>
+                <View style={styles.preview}>
+                    {props.location ? <Image source={{ uri: getMapPreview(props.location.lat, props.location.lon) }} style={styles.image} /> : <Text style={styles.text}>Address Not Available!</Text>}
+                </View>
             </View>
+
+
         </Pressable>
     )
 }
@@ -30,21 +45,31 @@ export default function SingleExpense(props) {
 
 const styles = StyleSheet.create({
     container: {
-        height: 80,
+        height: 250,
         backgroundColor: colors.secondary,
         borderRadius: 5,
         padding: "3%",
-        flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         marginVertical: "3%"
     },
+    top: {
+        flexDirection: "row",
+        height: "35%",
+        width: "100%",
+        justifyContent: "space-between"
+
+    },
+    textView: {
+        justifyContent: "center",
+        paddingVertical: "2%"
+    },
     priceView: {
         alignItems: "center",
         justifyContent: "center",
-        width:"25%",
-        height:"100%",
-        marginHorizontal:"1%",
+        width: "25%",
+        height: "100%",
+        marginHorizontal: "1%",
         backgroundColor: colors.quaternary,
         borderRadius: 5,
     },
@@ -56,7 +81,8 @@ const styles = StyleSheet.create({
     },
     dateText: {
         color: colors.tertiary,
-        marginVertical: "5%"
+        marginVertical: "1%",
+        fontSize: 12
     },
     priceText: {
         width: 100,
@@ -64,6 +90,31 @@ const styles = StyleSheet.create({
         color: colors.primary,
         fontWeight: 800,
         fontSize: 18,
-        textAlign:"center"
+        textAlign: "center"
+    },
+    bottom: {
+        flexDirection: "row",
+        marginVertical: "3%",
+        height: "59%",
+        width: "100%",
+        justifyContent: "space-between"
+
+    },
+    preview: {
+        backgroundColor: colors.primary,
+        width: "48%",
+        alignItems:"center",
+        justifyContent:"center",
+        borderRadius:5
+
+    },
+    image:{
+        height: "100%",
+        width: "100%"
+    },
+    text:{
+        color:colors.tertiary,
+        fontSize:15
     }
+    
 })
