@@ -12,7 +12,7 @@ export default function ExpenseContext({ children }) {
     const [showDate, setShowDate] = useState(true);
     const [shortlistExpense, setshortListExpense] = useState([]);
     const [users, setUsers] = useState([]);
-    const [loggedUser, setLoggedUser]=useState("");
+    const [loggedUser, setLoggedUser] = useState("");
 
     // at first make an array of last 7 days in shortListExpense
     useEffect(() => {
@@ -53,10 +53,11 @@ export default function ExpenseContext({ children }) {
             setExpense([...expense.filter(x => x.id !== deletedID), { id: deletedID, ...item }]);
             toggleModal(2);
         } else {
-            setExpense([...expense, { id: uuid.v4(), ...item }]);
+            setExpense([...expense, { id: uuid.v4(),...item }]);
             toggleModal(0);
         }
     }
+
 
     //keep the deletedID
     function getDeletedId(delID) {
@@ -99,20 +100,20 @@ export default function ExpenseContext({ children }) {
     }
 
     //
-    function SignUp(user){
-        if(!users.filter(item=>item.email===user.email).length){
+    function SignUp(user) {
+        if (!users.filter(item => item.email === user.email).length) {
 
-            newUser={id: uuid.v4(),...user}
-            setUsers([...users,newUser]);
+            newUser = { id: uuid.v4(), ...user }
+            setUsers([...users, newUser]);
             setLoggedUser(newUser);
             return true
-        }else{
+        } else {
             return false
         }
     }
 
     //
-    function signout(){
+    function signout() {
         setLoggedUser("")
     }
 
@@ -120,7 +121,7 @@ export default function ExpenseContext({ children }) {
         <ExpenseContextModule.Provider value={{
             expense: expense, addExpense: addExpense, deleteExpense: deleteExpense, toggleModal: toggleModal, deletedID: deletedID, getDeletedId: getDeletedId,
             modal: modal, getUpdatedExpense: getUpdatedExpense, updatedExpense: updatedExpense, showDate: showDate, sumPrices: sumPrices,
-            shortlistExpense: shortlistExpense, users: users, login: login, SignUp:SignUp, signout:signout,loggedUser:loggedUser
+            shortlistExpense: shortlistExpense, users: users, login: login, SignUp: SignUp, signout: signout, loggedUser: loggedUser
         }}>
             {children}
         </ExpenseContextModule.Provider>

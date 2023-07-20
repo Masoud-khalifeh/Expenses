@@ -21,7 +21,7 @@ export default function SingleExpense(props) {
                 <Text style={styles.dateText}>{props.date.toDateString()}</Text>
             </View>
             <View style={styles.priceView}>
-                <Text style={styles.priceText}>${props.price}</Text>
+                <Text style={styles.priceText}>{props.price}</Text>
             </View>
         </Pressable>
     )

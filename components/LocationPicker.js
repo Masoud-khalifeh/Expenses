@@ -1,14 +1,59 @@
-import {useState} from 'react';
-import { View, StyleSheet, Text } from "react-native";
+import { useState } from 'react';
+import { View, StyleSheet, Text, Alert, Image } from "react-native";
 import ButtonExpense from "./ButtonExpense";
 import { colors } from '../data/Colors';
+import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } from 'expo-location'
+import { getMapPreview, getAddress } from '../utility/Location';
+import { useEffect } from 'react';
+
 
 function LocationPicker(props) {
-    const [pickedLocation, setPickedLocation]=useState()
+    const [locationPermissionInformation, requestPermission] = useForegroundPermissions();
+    const [pickedLocation, setPickedLocation] = useState();
+    const [address, setAddress] = useState()
 
-    function currentLocatinHandler() {
 
+    async function verifyPermission() {
+        if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
+            const permissionRequest = await requestPermission();
+            return permissionRequest.granted;
+        }
+        if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+            Alert.alert("Insufficient Permission!", "You need to grant permission to use this feature.");
+            return false;
+        }
+        return true;
+    };
+
+
+    async function currentLocatinHandler() {
+        const hasPermission = await verifyPermission();
+        if (!hasPermission) {
+            return;
+        }
+
+        const location = await getCurrentPositionAsync();
+        setPickedLocation({ lat: location.coords.latitude, lon: location.coords.longitude });
+
+        // props.updateLocation({lat:location.coords.latitude,lon:location.coords.longitude})
     }
+
+    useEffect(() => {
+        if (pickedLocation) {
+            async function fetchAddress() {
+                const gotAddress = await getAddress(pickedLocation.lat, pickedLocation.lon);
+                setAddress(gotAddress);
+            };
+            fetchAddress();
+        }
+
+    }, [pickedLocation])
+
+    useEffect(() => {
+        if (address) {
+            props.updateLocation({...pickedLocation},address)
+        }
+    }, [address])
 
     function mapLocatinHandler() {
 
@@ -17,7 +62,7 @@ function LocationPicker(props) {
     return (
         <View style={styles.container}>
             <View style={styles.preview}>
-                {pickedLocation ? <Image source={{ uri: pickedLocation }} style={styles.image} /> : <Text style={styles.text}>No Location taken yet.</Text>}
+                {pickedLocation ? <Image source={{ uri: getMapPreview(pickedLocation.lat, pickedLocation.lon) }} style={styles.image} /> : <Text style={styles.text}>No Location taken yet.</Text>}
 
             </View>
             <View style={styles.imageButton}>

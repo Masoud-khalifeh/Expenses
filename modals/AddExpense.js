@@ -28,8 +28,8 @@ export default function AddExpense(props) {
         setItem({ ...item, imageURI: uri })
     }
 
-    function updateLocation(loc) {
-        setItem({ ...item, location: loc })
+    function updateLocation(loc,address) {
+        setItem({ ...item, location: loc, address:address })
     }
 
     function submitHandler() {
