@@ -47,7 +47,8 @@ export default function DatePicker(props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.primary,
-    height: "50%",
+    paddingTop:"30%",
+    height: "100%",
     marginTop: "15%",
     alignItems: "center"
   },

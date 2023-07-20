@@ -33,7 +33,7 @@ export default function SingleExpense(props) {
                     {props.imageURI ? <Image source={{ uri: props.imageURI }} style={styles.image} /> : <Text style={styles.text}>Photo Not Available!</Text>}
                 </View>
                 <View style={styles.preview}>
-                    {props.location ? <Image source={{ uri: getMapPreview(props.location.lat, props.location.lon) }} style={styles.image} /> : <Text style={styles.text}>Address Not Available!</Text>}
+                    {props.location ? <Image source={{ uri: getMapPreview(props.location.lat, props.location.lon) }} style={styles.image} /> : <Text style={styles.text}>Loction Not Available!</Text>}
                 </View>
             </View>
 
@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
         width: "48%",
         alignItems:"center",
         justifyContent:"center",
-        borderRadius:5
+        borderRadius:5,
+        overflow:"hidden"
 
     },
     image:{

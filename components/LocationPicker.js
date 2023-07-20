@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { View, StyleSheet, Text, Alert, Image } from "react-native";
 import ButtonExpense from "./ButtonExpense";
+import { ExpenseContextModule } from '../store/ExpenseContext';
 import { colors } from '../data/Colors';
-import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } from 'expo-location'
+import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } from 'expo-location';
 import { getMapPreview, getAddress } from '../utility/Location';
 import { useEffect } from 'react';
 
@@ -10,7 +11,9 @@ import { useEffect } from 'react';
 function LocationPicker(props) {
     const [locationPermissionInformation, requestPermission] = useForegroundPermissions();
     const [pickedLocation, setPickedLocation] = useState();
-    const [address, setAddress] = useState()
+    const [address, setAddress] = useState();
+    
+    const sharedData=useContext(ExpenseContextModule);
 
 
     async function verifyPermission() {
@@ -26,6 +29,7 @@ function LocationPicker(props) {
     };
 
     async function currentLocatinHandler() {
+        sharedData.toogleLocation(true);
         const hasPermission = await verifyPermission();
         if (!hasPermission) {
             return;
@@ -33,6 +37,7 @@ function LocationPicker(props) {
 
         const location = await getCurrentPositionAsync();
         setPickedLocation({ lat: location.coords.latitude, lon: location.coords.longitude });
+        sharedData.toogleLocation(false);
     }
 
     useEffect(() => {
@@ -59,7 +64,7 @@ function LocationPicker(props) {
     return (
         <View style={styles.container}>
             <View style={styles.preview}>
-                {pickedLocation || props.oldLocationURL ?
+                {(pickedLocation || props.oldLocationURL) && !sharedData.locationLoading ?
                     <Image source={{
                         uri: pickedLocation ?
                             getMapPreview(pickedLocation.lat, pickedLocation.lon)
@@ -67,7 +72,7 @@ function LocationPicker(props) {
                             getMapPreview(props.oldLocationURL.lat, props.oldLocationURL.lon)
                     }} style={styles.image} />
                     :
-                    <Text style={styles.text}>No Location taken yet.</Text>}
+                    <Text style={styles.text}>{sharedData.locationLoading?"Loading ...":"No Location taken yet."}</Text>}
 
             </View>
             <View style={styles.imageButton}>

@@ -7,13 +7,23 @@ import ErrorMessage from "../components/ErrorMessage";
 import DatePicker from "./DatePicker";
 import ImagePicker from "../components/ImagePicker";
 import LocationPicker from '../components/LocationPicker'
+import { useEffect } from "react";
 
 export default function AddExpense(props) {
     const [item, setItem] = useState({
         name: "", date: new Date(), price: "", imageURI: "", location:"", address:""
     });
-    const [error, setError] = useState({ name: "", price: "" })
+    const [error, setError] = useState({ name: "", price: "",location:"" })
     const sharedData = useContext(ExpenseContextModule);
+
+    useEffect(()=>{
+        sharedData.toogleLocation(false)
+
+    },[])
+
+    useEffect(()=>{
+        setError({ name: "", price: "",location:"" })
+    },[sharedData.locationLoading])
 
     function changeHandler(itemName, value) {
         setError({ name: "", price: "" }); //by changing the input, the error messages will vanish
@@ -34,10 +44,15 @@ export default function AddExpense(props) {
 
     function submitHandler() {
         if (item.name && item.price) { //check if the inputes are empty or not
-            sharedData.addExpense(item, true); //with argument true we do add not update
-            if (props.redirect) { //if the addExpense is called from RecentExpenses, it will redirect it to AllExpenses
-                props.redirect()
+            if(sharedData.locationLoading){
+                setError({ ...error, location: "Location has not been yet loaded !" });
+            }else {
+                sharedData.addExpense(item, true); //with argument true we do add not update
+                if (props.redirect) { //if the addExpense is called from RecentExpenses, it will redirect it to AllExpenses
+                    props.redirect()
+                }
             }
+            
         } else {
             if (!item.name && !item.price) {
                 setError({ name: "Please, Fill the Name !", price: "Please, Fill the Price !" })
@@ -61,7 +76,7 @@ export default function AddExpense(props) {
                         <Text style={styles.date}>{item.date.toDateString()} </Text>
                         {sharedData.modal.showDate && <DatePicker updateDate={updateDate} />}
                     </Pressable>
-                    <TextInput style={styles.price} placeholder="Price" value={item.price} onChangeText={(value) => changeHandler("price", value)} keyboardType="numeric" />
+                    <TextInput style={styles.price} placeholder="Price" value={item.price} onChangeText={(value) => changeHandler("price", value)} keyboardType="number-pad" />
                 </View>
                 <View style={styles.image}>
                     <ImagePicker updateImage={updateImage} oldImageURL={null} />
@@ -76,6 +91,7 @@ export default function AddExpense(props) {
                 <View style={styles.errorArea}>
                     {error.name && <ErrorMessage>{error.name}</ErrorMessage>}
                     {error.price && <ErrorMessage>{error.price}</ErrorMessage>}
+                    {error.location && <ErrorMessage>{error.location}</ErrorMessage>}
                 </View>
 
             </View>

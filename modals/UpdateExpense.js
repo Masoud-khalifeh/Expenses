@@ -14,8 +14,19 @@ export default function UpdateExpense() {
     const [item, setItem] = useState({
         name: "", date: new Date(), price: "", imageURI: "", location:"",
     });
-    const [error, setError] = useState({ name: "", price: "" })
+    const [error, setError] = useState({ name: "", price: "",location:"" })
     const sharedData = useContext(ExpenseContextModule);
+
+    useEffect(()=>{
+        sharedData.toogleLocation(false)
+
+    },[]);
+
+    useEffect(()=>{
+        setError({ name: "", price: "",location:"" })
+    },[sharedData.locationLoading]);
+
+
 
     //get the initial amount for update
     useEffect(() => { 
@@ -43,7 +54,11 @@ export default function UpdateExpense() {
 
     function updateHandler() {
         if (item.name && item.price) { //check if the inputes are empty or not
-            sharedData.addExpense(item,false); //with argument false we do update
+            if(sharedData.locationLoading){
+                setError({ ...error, location: "Location has not been yet loaded !" });
+            }else{
+                sharedData.addExpense(item,false); //with argument false we do update
+            }
         } else {
             if (!item.name && !item.price) {
                 setError({ name: "Please, Fill the Name !", price: "Please, Fill the Price !" })
@@ -82,6 +97,7 @@ export default function UpdateExpense() {
                 <View style={styles.errorArea}>
                     {error.name && <ErrorMessage>{error.name}</ErrorMessage>}
                     {error.price && <ErrorMessage>{error.price}</ErrorMessage>}
+                    {error.location && <ErrorMessage>{error.location}</ErrorMessage>}
                 </View>
             </View>
         </Modal>

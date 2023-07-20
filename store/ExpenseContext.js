@@ -13,6 +13,7 @@ export default function ExpenseContext({ children }) {
     const [shortlistExpense, setshortListExpense] = useState([]);
     const [users, setUsers] = useState([]);
     const [loggedUser, setLoggedUser] = useState("");
+    const[locationLoading,setLocationLoading]=useState(false)
 
     // at first make an array of last 7 days in shortListExpense
     useEffect(() => {
@@ -80,6 +81,10 @@ export default function ExpenseContext({ children }) {
         }
     }
 
+    function toogleLocation(status){
+        setLocationLoading(status)
+    }
+
     //delete an expense
     function deleteExpense() {
         setExpense(expense.filter(item => item.id !== deletedID));
@@ -121,7 +126,8 @@ export default function ExpenseContext({ children }) {
         <ExpenseContextModule.Provider value={{
             expense: expense, addExpense: addExpense, deleteExpense: deleteExpense, toggleModal: toggleModal, deletedID: deletedID, getDeletedId: getDeletedId,
             modal: modal, getUpdatedExpense: getUpdatedExpense, updatedExpense: updatedExpense, showDate: showDate, sumPrices: sumPrices,
-            shortlistExpense: shortlistExpense, users: users, login: login, SignUp: SignUp, signout: signout, loggedUser: loggedUser
+            shortlistExpense: shortlistExpense, users: users, login: login, SignUp: SignUp, signout: signout, loggedUser: loggedUser,locationLoading:locationLoading,
+            toogleLocation:toogleLocation
         }}>
             {children}
         </ExpenseContextModule.Provider>
