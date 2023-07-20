@@ -6,10 +6,11 @@ import { ExpenseContextModule } from "../store/ExpenseContext";
 import ErrorMessage from "../components/ErrorMessage";
 import DatePicker from "./DatePicker";
 import ImagePicker from "../components/ImagePicker";
+import LocationPicker from '../components/LocationPicker'
 
 export default function AddExpense(props) {
     const [item, setItem] = useState({
-        name: "", date: new Date(), price: "", imageURI: ""
+        name: "", date: new Date(), price: "", imageURI: "", location:""
     });
     const [error, setError] = useState({ name: "", price: "" })
     const sharedData = useContext(ExpenseContextModule);
@@ -27,7 +28,9 @@ export default function AddExpense(props) {
         setItem({ ...item, imageURI: uri })
     }
 
-
+    function updateLocation(loc) {
+        setItem({ ...item, location: loc })
+    }
 
     function submitHandler() {
         if (item.name && item.price) { //check if the inputes are empty or not
@@ -62,6 +65,9 @@ export default function AddExpense(props) {
                 </View>
                 <View style={styles.image}>
                     <ImagePicker updateImage={updateImage} />
+                </View>
+                <View style={styles.image}>
+                    <LocationPicker updateLocation={updateLocation} />
                 </View>
                 <View style={styles.buttonArea}>
                     <ButtonExpense primary={false} onPress={() => sharedData.toggleModal(0)}>Cancel</ButtonExpense>
@@ -148,6 +154,6 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     image:{
-        height:"30%"
+        height:"25%"
     }
 })
