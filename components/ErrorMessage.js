@@ -16,17 +16,17 @@ export default function ErrorMessage({ children }) {
 const styles = StyleSheet.create({
     container: {
         width:"100%",
-        backgroundColor: "yellow",
-        justifyContent:"center",
-        alignItems:"center",
+        justifyContent:"flex-start",
+        marginTop:0,
+        alignItems:"flex-start",
         borderRadius:"5%",
-        marginVertical:"2%"
     },
     text: {
         color: colors.prime,
         padding:"2%",
         fontSize:15,
         fontWeight:700,
-        textAlign:"center"
+        textAlign:"center",
+        color:"yellow"
     }
 })

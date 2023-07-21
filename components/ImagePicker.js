@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { View, Alert, Image, StyleSheet, Text } from 'react-native'
 import ButtonExpense from './ButtonExpense';
 import { launchCameraAsync, useCameraPermissions, PermissionStatus } from 'expo-image-picker';

@@ -8,7 +8,7 @@ export default function ExpenseContext({ children }) {
     const [expense, setExpense] = useState([]);
     const [deletedID, setDeletedID] = useState("");
     const [updatedExpense, setUpdatedExpense] = useState("");
-    const [modal, setModal] = useState({ add: false, delete: false, update: false, showDate: false });
+    const [modal, setModal] = useState({ add: false, delete: false, update: false, showDate: false,map:false });
     const [showDate, setShowDate] = useState(true);
     const [shortlistExpense, setshortListExpense] = useState([]);
     const [users, setUsers] = useState([]);
@@ -66,7 +66,7 @@ export default function ExpenseContext({ children }) {
     }
 
     //open and close the Modals
-    function toggleModal(status,) {//o:add - 1:delete - 2:update - 3:combine 1 and 2 - 4:showDate
+    function toggleModal(status) {//o:add - 1:delete - 2:update - 3:combine 1 and 2 - 4:showDate - 5:map
 
         if (status === 0) {
             setModal({ ...modal, add: !modal.add });
@@ -76,8 +76,11 @@ export default function ExpenseContext({ children }) {
             setModal({ ...modal, update: !modal.update });
         } else if (status === 3) {
             setModal({ ...modal, delete: !modal.delete, update: !modal.update });
-        } else {
+        } else if(status === 4){
             setModal({ ...modal, showDate: !modal.showDate });
+        }else {
+            setModal({ ...modal, map: !modal.map });
+
         }
     }
 

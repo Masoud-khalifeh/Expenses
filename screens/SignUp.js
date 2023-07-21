@@ -10,50 +10,49 @@ import ErrorMessage from '../components/ErrorMessage';
 export default function Login({ navigation }) {
     const sharedData = useContext(ExpenseContextModule);
     const [user, setUser] = useState({ email: '', passWord: '', repeatPassWord: '', name: '' });
-    const [error, setError] = useState([]);
+    const [error, setError] = useState({ email: "", name: "", password: "", repeatPassword: "" });
 
     function changeHandler(name, value) {
-        setError([])
+        setError({ email: "", name: "", password: "", repeatPassword: "" });
         if (name === "email") {
-            setUser({ ...user, [name]: value.toLowerCase() })
+            setUser({ ...user, [name]: value.toLowerCase(), passWord: "", repeatPassWord: "" })
         } else if (name === "name") {
-            setUser({ ...user, [name]: value.charAt(0).toUpperCase() + value.slice(1) })
+            setUser({ ...user, [name]: value.charAt(0).toUpperCase() + value.slice(1), passWord: "", repeatPassWord: "" })
         } else {
             setUser({ ...user, [name]: value })
         }
     }
 
     function submitHandler() {
-        const error = [];
+        let error = {}
         if (!user.email) {
-            error.push("Please Fill the Email")
+            error = { ...error, email: "Please Fill the Email." }
         } else if (!isValidEmail(user.email)) {
-            error.push("Email is not correct !")
+            error = { ...error, email: "Email is not correct !" }
         }
         if (!user.name) {
-            error.push("Please Fill the Name")
+            error = { ...error, name: "Please Fill the Name." }
         }
         if (!user.passWord) {
-            error.push("Please Fill the PassWord")
-        }else if(!isValidPassword(user.passWord)){
-            error.push("Password must be at least 8 character, combination of small letters, capital letters, and numbers")
+            error = { ...error, password: "Please Fill the PassWord." }
+        } else if (!isValidPassword(user.passWord)) {
+            error = { ...error, password: "Password must be at least 8 character, combination of small letters, capital letters, and numbers." }
         } else if (user.passWord !== user.repeatPassWord) {
-            error.push("PassWord does not Match !")
+            error = { ...error, repeatPassword: "PassWord does not Match !" }
         }
 
-
+        setError(error);
 
         if (user.email && user.passWord && user.name && isValidEmail(user.email) && user.passWord === user.repeatPassWord) {
 
             if (sharedData.SignUp(user)) {
                 navigation.navigate("AllExpenses")
             } else {
-                error.push("The Email Already Exists !")
+                setError({ ...error, email: "The Email Already Exists !" })
             }
             setUser({ email: '', passWord: '' })
         }
 
-        setError(error)
     };
 
     //to validate email
@@ -74,7 +73,7 @@ export default function Login({ navigation }) {
             password.length >= minLength &&
             hasUppercase &&
             hasLowercase &&
-            hasNumber 
+            hasNumber
             // hasSpecialChar
         );
     };
@@ -82,16 +81,16 @@ export default function Login({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={[styles.errorMessage, { display: (error.length) ? "flex" : "none" }]}>
-                <FlatList justifyContent="center" data={error} renderItem={({ item }) => (
-                    <ErrorMessage>{item}</ErrorMessage>
-                )} />
-            </View>
+
             <View style={styles.inputArea}>
                 <TextInput placeholder="Email" keyboardType="email-address" placeholderTextColor={colors.secondary} style={styles.input} name="email" value={user.email} onChangeText={(value) => changeHandler("email", value)} />
+                <ErrorMessage>{error.email}</ErrorMessage>
                 <TextInput placeholder="Name" placeholderTextColor={colors.secondary} style={styles.input} name="name" value={user.name} onChangeText={(value) => changeHandler("name", value)} />
+                <ErrorMessage>{error.name}</ErrorMessage>
                 <TextInput secureTextEntry={true} placeholder="Password" placeholderTextColor={colors.secondary} style={styles.input} name="passWord" value={user.passWord} onChangeText={(value) => changeHandler("passWord", value)} />
+                <ErrorMessage>{error.password}</ErrorMessage>
                 <TextInput secureTextEntry={true} placeholder="Repeat Password" placeholderTextColor={colors.secondary} style={styles.input} name="repeatPassWord" value={user.repeatPassWord} onChangeText={(value) => changeHandler("repeatPassWord", value)} />
+                <ErrorMessage>{error.repeatPassword}</ErrorMessage>
             </View>
             <View style={styles.buttonView}>
                 <ButtonExpense primary={true} onPress={submitHandler}>Sign Up</ButtonExpense>
@@ -110,11 +109,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center'
     },
-    errorMessage: {
-        maxHeight: "18%",
-        paddingTop: "5%",
-        justifyContent: "flex-end"
-    },
     inputArea: {
         marginTop: "3%",
         width: "80%",
@@ -125,7 +119,7 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: colors.tertiary,
         width: "100%",
-        marginVertical: "3%",
+        marginTop: "3%",
         fontSize: 20,
         padding: "5%",
         borderRadius: 5
@@ -142,8 +136,8 @@ const styles = StyleSheet.create({
     },
     buttonView: {
         width: "70%",
-        height: "30%",
-        padding: "5%",
+        height: "20%",
+        paddingHorizontal: "5%",
         justifyContent: "center",
         alignItems: "center"
 

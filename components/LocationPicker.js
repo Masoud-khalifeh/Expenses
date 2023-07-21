@@ -12,8 +12,9 @@ function LocationPicker(props) {
     const [locationPermissionInformation, requestPermission] = useForegroundPermissions();
     const [pickedLocation, setPickedLocation] = useState();
     const [address, setAddress] = useState();
-    
-    const sharedData=useContext(ExpenseContextModule);
+
+    const sharedData = useContext(ExpenseContextModule);
+
 
 
     async function verifyPermission() {
@@ -58,7 +59,7 @@ function LocationPicker(props) {
     }, [address])
 
     function mapLocatinHandler() {
-
+        sharedData.toggleModal(5)
     }
 
     return (
@@ -72,7 +73,7 @@ function LocationPicker(props) {
                             getMapPreview(props.oldLocationURL.lat, props.oldLocationURL.lon)
                     }} style={styles.image} />
                     :
-                    <Text style={styles.text}>{sharedData.locationLoading?"Loading ...":"No Location taken yet."}</Text>}
+                    <Text style={styles.text}>{sharedData.locationLoading ? "Loading ..." : "No Location taken yet."}</Text>}
 
             </View>
             <View style={styles.imageButton}>
@@ -93,7 +94,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: "80%",
-        paddingBottom: "10%",
         flexDirection: "row"
     },
     preview: {

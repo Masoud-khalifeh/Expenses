@@ -37,6 +37,7 @@ export default function AllExpenses({ navigation }) {
             {sharedData.modal.add && <AddExpense />}
             {sharedData.modal.delete && <DeleteExpense />}
             {sharedData.modal.update && <UpdateExpense />}
+            
             <View style={styles.priceShow}>
                 <Text style={styles.priceShowLeft}>Last All Days</Text>
                 <Text style={styles.priceShowRight}>${sharedData.sumPrices(true)}</Text>

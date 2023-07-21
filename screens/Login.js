@@ -13,26 +13,26 @@ export default function Login({ navigation }) {
     const [error, setError] = useState([]);
 
     function changeHandler(name, value) {
-        setError([])
-        setUser({ ...user, [name]:name==="email"? value.toLowerCase() :value })
+        setError({ email: "", password: "", general: "" })
+        setUser({ ...user, [name]: name === "email" ? value.toLowerCase() : value })
     }
 
     function submitHandler() {
-        const error = []
+        let error = {}
         if (user.email && user.passWord) {
             setUser({ email: '', passWord: '' })
-            if( sharedData.login(user)){
+            if (sharedData.login(user)) {
                 navigation.navigate("AllExpenses")
-            }else{
-                error.push("Wrong Email or PassWord  !")
+            } else {
+                error = { ...error, general: "Wrong Email or PassWord  !" }
             }
-           
+
         } else if (user.passWord) {
-            error.push("Please Fill the User Name")
+            error = { ...error, email: "Please Fill the Email." }
         } else if (user.email) {
-            error.push("Please Fill the PassWord")
+            error = { ...error, password: "Please Fill the PassWord." }
         } else {
-            error.push(...["Please Fill the User Name", "Please Fill the PassWord"])
+            error = { ...error, email: "Please Fill the Email.", password: "Please Fill the PassWord" }
         }
         setError(error);
 
@@ -40,14 +40,14 @@ export default function Login({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={[styles.errorMessage,{display:(error.length)? "flex" : "none"}]}>
-                <FlatList justifyContent="center" data={error}  renderItem={({ item }) => (
-                    <ErrorMessage>{item}</ErrorMessage>
-                )} />
+            <View style={styles.error}>
+                <ErrorMessage>{error.general}</ErrorMessage>
             </View>
             <View style={styles.inputArea}>
                 <TextInput placeholder="Email" keyboardType="email-address" placeholderTextColor={colors.secondary} style={styles.input} name="email" value={user.email} onChangeText={(value) => changeHandler("email", value)} />
+                <ErrorMessage>{error.email}</ErrorMessage>
                 <TextInput secureTextEntry={true} placeholder="Password" placeholderTextColor={colors.secondary} style={styles.input} name="passWord" value={user.passWord} onChangeText={(value) => changeHandler("passWord", value)} />
+                <ErrorMessage>{error.password}</ErrorMessage>
             </View>
             <View style={styles.buttonView}>
                 <ButtonExpense primary={true} onPress={submitHandler}>Login</ButtonExpense>
@@ -66,22 +66,17 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
-    errorMessage: {
-        maxHeight: "10%",
-        paddingTop: "5%",
-        justifyContent: "flex-end"
-    },
     inputArea: {
         width: "80%",
         justifyContent: 'center',
-        marginTop:"10%",
+        marginTop: "5%",
         borderRadius: 5,
         alignItems: 'center',
     },
     input: {
         backgroundColor: colors.tertiary,
         width: "100%",
-        marginVertical: "5%",
+        marginTop: "5%",
         fontSize: 20,
         padding: "5%",
         borderRadius: 5
@@ -98,10 +93,12 @@ const styles = StyleSheet.create({
     },
     buttonView: {
         width: "70%",
-        height: "30%",
+        height: "25%",
         padding: "5%",
         justifyContent: "center",
         alignItems: "center"
-
+    },
+    error:{
+        marginTop:"10%",
     }
 })
