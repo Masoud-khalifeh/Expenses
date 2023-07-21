@@ -5,7 +5,7 @@ import ButtonExpense from '../components/ButtonExpense';
 import { ExpenseContextModule } from '../store/ExpenseContext';
 import { colors } from '../data/Colors';
 
-function Map() {
+function Map(props) {
     const [selectedLocation, setSelectedLocation] = useState();
 
     const sharedData = useContext(ExpenseContextModule)
@@ -19,13 +19,15 @@ function Map() {
 
     function selectLocationHandler(event) {
         const lat = event.nativeEvent.coordinate.latitude;
-        const lng = event.nativeEvent.coordinate.longitude;
+        const lon = event.nativeEvent.coordinate.longitude;
 
-        setSelectedLocation({ lat: lat, lng: lng });
+        setSelectedLocation({ lat: lat, lon: lon });
     }
 
-    function confirmHandler() {
-        sharedData.toggleModal(5)
+    async function confirmHandler() {
+        sharedData.toggleModal(5);
+        props.updateLocation(selectedLocation)
+
     }
 
     return (
@@ -45,7 +47,7 @@ function Map() {
                                 title="Picked Location"
                                 coordinate={{
                                     latitude: selectedLocation.lat,
-                                    longitude: selectedLocation.lng,
+                                    longitude: selectedLocation.lon,
                                 }}
                             />
                         )}

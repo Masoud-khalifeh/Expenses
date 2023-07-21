@@ -8,7 +8,7 @@ import DatePicker from "./DatePicker";
 import ImagePicker from "../components/ImagePicker";
 import LocationPicker from '../components/LocationPicker'
 import { useEffect } from "react";
-import Map from "../modals/Map";
+
 
 
 export default function AddExpense(props) {
@@ -68,7 +68,6 @@ export default function AddExpense(props) {
 
     return (
         <Modal transparent={true} animationType="slide">
-            {sharedData.modal.map && <Map />}
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Add Expense</Text>

@@ -6,6 +6,7 @@ import { colors } from '../data/Colors';
 import { getCurrentPositionAsync, useForegroundPermissions, PermissionStatus } from 'expo-location';
 import { getMapPreview, getAddress } from '../utility/Location';
 import { useEffect } from 'react';
+import Map from "../modals/Map";
 
 
 function LocationPicker(props) {
@@ -16,6 +17,9 @@ function LocationPicker(props) {
     const sharedData = useContext(ExpenseContextModule);
 
 
+     async function updateLocation(newLocation) {
+        setPickedLocation(newLocation);
+    }
 
     async function verifyPermission() {
         if (locationPermissionInformation.status === PermissionStatus.UNDETERMINED) {
@@ -64,6 +68,7 @@ function LocationPicker(props) {
 
     return (
         <View style={styles.container}>
+            {sharedData.modal.map && <Map updateLocation={updateLocation}/>}
             <View style={styles.preview}>
                 {(pickedLocation || props.oldLocationURL) && !sharedData.locationLoading ?
                     <Image source={{
