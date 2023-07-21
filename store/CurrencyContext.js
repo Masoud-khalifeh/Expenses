@@ -12,32 +12,32 @@ export default function CurrencyContext({ children }) {
     const [selectedRates, setSelectedRates] = useState();
     const API_GetRate = "https://openexchangerates.org/api/latest.json?app_id=5eaf6a4b7cbf4476ae9b9721064e9df2";
 
-    //this function fetch the rates from API
-    const fetchData = async () => await axios.get(API_GetRate).then((response) => {
-        setRates(response.data.rates)
-    });
+    // //this function fetch the rates from API
+    // const fetchData = async () => await axios.get(API_GetRate).then((response) => {
+    //     setRates(response.data.rates)
+    // });
 
-    //fetch the data from ApI at first
-    useEffect(() => {
-        fetchData()
-    }, []);
+    // //fetch the data from ApI at first
+    // useEffect(() => {
+    //     fetchData()
+    // }, []);
 
     //after 10 minutes, fetch the data again from API
-    setInterval(()=>{
-        fetchData()
-    },600000)
+    // setInterval(()=>{
+    //     fetchData()
+    // },600000)
 
     //after each change in rates, it chooses the selected currencies
-    useEffect(() => {
-        const ratesByCurrency = {};
+    // useEffect(() => {
+    //     const ratesByCurrency = {};
 
-        for (const currencyCode in curencyNames) {
-            if (rates.hasOwnProperty(currencyCode)) {
-                ratesByCurrency[currencyCode] = rates[currencyCode];
-            }
-        };
-        setSelectedRates(ratesByCurrency)
-    }, [rates])
+    //     for (const currencyCode in curencyNames) {
+    //         if (rates.hasOwnProperty(currencyCode)) {
+    //             ratesByCurrency[currencyCode] = rates[currencyCode];
+    //         }
+    //     };
+    //     setSelectedRates(ratesByCurrency)
+    // }, [rates])
 
     return (
         <currencyContextModule.Provider value={{ curencyNames: curencyNames, selectedRates:selectedRates }}>

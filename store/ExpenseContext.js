@@ -13,7 +13,7 @@ export default function ExpenseContext({ children }) {
     const [shortlistExpense, setshortListExpense] = useState([]);
     const [users, setUsers] = useState([]);
     const [loggedUser, setLoggedUser] = useState("");
-    const[locationLoading,setLocationLoading]=useState(false)
+    const[locationLoading,setLocationLoading]=useState(false);
 
     // at first make an array of last 7 days in shortListExpense
     useEffect(() => {

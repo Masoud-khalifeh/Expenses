@@ -1,16 +1,33 @@
 
-import { View, Text, StyleSheet, TextInput, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Alert } from 'react-native';
 import { ExpenseContextModule } from '../store/ExpenseContext';
 import { colors } from '../data/Colors';
 import ButtonExpense from '../components/ButtonExpense';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ErrorMessage from '../components/ErrorMessage';
+import postUser from '../utility/http';
 
 
 export default function Login({ navigation }) {
     const sharedData = useContext(ExpenseContextModule);
     const [user, setUser] = useState({ email: '', passWord: '', repeatPassWord: '', name: '' });
     const [error, setError] = useState({ email: "", name: "", password: "", repeatPassword: "" });
+    
+    const [addUserStatus, setAddUserStatus] = useState();
+
+
+    useEffect(() => {
+        if(addUserStatus){
+            if (addUserStatus==="success") {
+                sharedData.SignUp(user);
+                navigation.navigate("AllExpenses");
+                setUser({ email: '', passWord: '', repeatPassWord: '', name: '' })
+            } else {
+                setError({ ...error, email: "The Email Already Exists !" })
+            }
+        }
+        
+    }, [addUserStatus]);
 
     function changeHandler(name, value) {
         setError({ email: "", name: "", password: "", repeatPassword: "" });
@@ -24,6 +41,8 @@ export default function Login({ navigation }) {
     }
 
     function submitHandler() {
+
+
         let error = {}
         if (!user.email) {
             error = { ...error, email: "Please Fill the Email." }
@@ -45,14 +64,18 @@ export default function Login({ navigation }) {
 
         if (user.email && user.passWord && user.name && isValidEmail(user.email) && user.passWord === user.repeatPassWord) {
 
-            if (sharedData.SignUp(user)) {
-                navigation.navigate("AllExpenses")
-            } else {
-                setError({ ...error, email: "The Email Already Exists !" })
-            }
-            setUser({ email: '', passWord: '' })
-        }
+            async function addUser() {
+                const response = await postUser(user.email, user.name, user.passWord);
+                if (response){
+                    setAddUserStatus("success")
+                }else {
+                    setAddUserStatus("failed")
+                }
+            };
+            
+            addUser();
 
+        }
     };
 
     //to validate email
