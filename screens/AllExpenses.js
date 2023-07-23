@@ -23,7 +23,7 @@ export default function AllExpenses({ navigation }) {
             headerLeft: () => {
                 return (
                     <View style={styles.header}>
-                        <Text style={styles.headerText}>{sharedData.loggedUser.name}</Text>
+                        <Text style={styles.headerText}>{sharedData.user.name}</Text>
                         <Icon onPress={() => { sharedData.signout(); navigation.navigate("Login") }} color={colors.quaternary} size={30} name="log-out-outline" />
                     </View>
                 )

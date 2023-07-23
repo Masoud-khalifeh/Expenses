@@ -4,6 +4,7 @@ import ButtonExpense from '../components/ButtonExpense';
 import { ExpenseContextModule } from '../store/ExpenseContext';
 import { useContext, useState, } from 'react';
 import ErrorMessage from '../components/ErrorMessage';
+import { LoginUser } from '../utility/http';
 
 
 
@@ -18,6 +19,7 @@ export default function Login({ navigation }) {
     }
 
     function submitHandler() {
+        LoginUser(user.email, user.passWord);
         let error = {}
         if (user.email && user.passWord) {
             setUser({ email: '', passWord: '' })

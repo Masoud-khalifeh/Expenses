@@ -5,29 +5,15 @@ import { colors } from '../data/Colors';
 import ButtonExpense from '../components/ButtonExpense';
 import { useContext, useEffect, useState } from 'react';
 import ErrorMessage from '../components/ErrorMessage';
-import postUser from '../utility/http';
+import postUser, { checkEmail } from '../utility/http';
 
 
 export default function Login({ navigation }) {
     const sharedData = useContext(ExpenseContextModule);
     const [user, setUser] = useState({ email: '', passWord: '', repeatPassWord: '', name: '' });
     const [error, setError] = useState({ email: "", name: "", password: "", repeatPassword: "" });
-    
-    const [addUserStatus, setAddUserStatus] = useState();
 
 
-    useEffect(() => {
-        if(addUserStatus){
-            if (addUserStatus==="success") {
-                sharedData.SignUp(user);
-                navigation.navigate("AllExpenses");
-                setUser({ email: '', passWord: '', repeatPassWord: '', name: '' })
-            } else {
-                setError({ ...error, email: "The Email Already Exists !" })
-            }
-        }
-        
-    }, [addUserStatus]);
 
     function changeHandler(name, value) {
         setError({ email: "", name: "", password: "", repeatPassword: "" });
@@ -40,10 +26,11 @@ export default function Login({ navigation }) {
         }
     }
 
-    function submitHandler() {
+    async function submitHandler() {
 
 
         let error = {}
+
         if (!user.email) {
             error = { ...error, email: "Please Fill the Email." }
         } else if (!isValidEmail(user.email)) {
@@ -60,24 +47,30 @@ export default function Login({ navigation }) {
             error = { ...error, repeatPassword: "PassWord does not Match !" }
         }
 
-        setError(error);
+
 
         if (user.email && user.passWord && user.name && isValidEmail(user.email) && user.passWord === user.repeatPassWord) {
-
-            async function addUser() {
-                const response = await postUser(user.email, user.name, user.passWord);
-                if (response){
-                    setAddUserStatus("success")
-                }else {
-                    setAddUserStatus("failed")
+            if (await checkEmail(user.email) === 1) {
+                error = { ...error, email: "This email has already exists." }
+            } else if (await checkEmail(user.email) === 0) {
+                if (await postUser(user.email, user.name, user.passWord)===1) {
+                    alert("Welcome! You registered successfully.");
+                    setUser({ email: '', passWord: '', repeatPassWord: '', name: '' });
+                    sharedData.SignUp(user);
+                    navigation.navigate('AllExpenses');
                 }
-            };
-            
-            addUser();
+            } else {
+                alert("Error in recording information")
+            }
+
+
+
 
         }
+        setError(error);
     };
 
+   
     //to validate email
     const isValidEmail = (email) => {
         const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;

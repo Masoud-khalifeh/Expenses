@@ -11,8 +11,7 @@ export default function ExpenseContext({ children }) {
     const [modal, setModal] = useState({ add: false, delete: false, update: false, showDate: false,map:false });
     const [showDate, setShowDate] = useState(true);
     const [shortlistExpense, setshortListExpense] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [loggedUser, setLoggedUser] = useState("");
+    const [user, setUser] = useState([]);
     const[locationLoading,setLocationLoading]=useState(false);
 
     // at first make an array of last 7 days in shortListExpense
@@ -96,41 +95,27 @@ export default function ExpenseContext({ children }) {
 
     //
     function login(user) {
-        let status = false;
-        const selectedUser = users.filter(item => item.email === user.email);
-        if (selectedUser.length) {
-            if (selectedUser[0].passWord === user.passWord) {
-                status = true;
-                setLoggedUser(selectedUser)
-            }
-        }
-        return (status)
+ 
     }
 
     //
     function SignUp(user) {
-        if (!users.filter(item => item.email === user.email).length) {
-
-            newUser = { id: uuid.v4(), ...user }
-            setUsers([...users, newUser]);
-            setLoggedUser(newUser);
-            return true
-        } else {
-            return false
-        }
+        setUser(user)
     }
 
     //
     function signout() {
-        setLoggedUser("")
+        setUser("")
     }
+
+   
 
     return (
         <ExpenseContextModule.Provider value={{
             expense: expense, addExpense: addExpense, deleteExpense: deleteExpense, toggleModal: toggleModal, deletedID: deletedID, getDeletedId: getDeletedId,
             modal: modal, getUpdatedExpense: getUpdatedExpense, updatedExpense: updatedExpense, showDate: showDate, sumPrices: sumPrices,
-            shortlistExpense: shortlistExpense, users: users, login: login, SignUp: SignUp, signout: signout, loggedUser: loggedUser,locationLoading:locationLoading,
-            toogleLocation:toogleLocation
+            shortlistExpense: shortlistExpense, user: user, login: login, SignUp: SignUp, signout: signout,locationLoading:locationLoading,
+            toogleLocation:toogleLocation, 
         }}>
             {children}
         </ExpenseContextModule.Provider>
