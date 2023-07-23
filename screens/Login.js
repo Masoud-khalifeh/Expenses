@@ -23,10 +23,11 @@ export default function Login({ navigation }) {
 
         let error = {}
         if (user.email && user.passWord && isValidEmail(user.email)) {
-            const status = await LoginUser(user.email, user.passWord);
-            if (status ) {
+            const loggedUser = await LoginUser(user.email, user.passWord);
+            if (loggedUser ) {
                 alert("Welcome! ");
-                sharedData.SignUp(status);
+                sharedData.SignUp(loggedUser);
+                sharedData.loadExpenses(loggedUser.id);
                 navigation.navigate('AllExpenses');
             } else {
                 error = { ...error, general: "Wrong Email or Password!" }

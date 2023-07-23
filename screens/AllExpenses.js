@@ -8,6 +8,7 @@ import Icon from "../components/Icon";
 import DeleteExpense from "../modals/DeleteExpense";
 import UpdateExpense from "../modals/UpdateExpense";
 
+
 export default function AllExpenses({ navigation }) {
 
     const sharedData = useContext(ExpenseContextModule);
@@ -30,14 +31,16 @@ export default function AllExpenses({ navigation }) {
             }
         })
     }, [])
+
     
+
 
     return (
         <View style={styles.container}>
             {sharedData.modal.add && <AddExpense />}
             {sharedData.modal.delete && <DeleteExpense />}
             {sharedData.modal.update && <UpdateExpense />}
-            
+
             <View style={styles.priceShow}>
                 <Text style={styles.priceShowLeft}>Last All Days</Text>
                 <Text style={styles.priceShowRight}>${sharedData.sumPrices(true)}</Text>
@@ -86,14 +89,14 @@ const styles = StyleSheet.create({
         width: "90%",
         height: "90%"
     },
-    header:{
-        flexDirection:"row",
-        paddingHorizontal:"10%",
-        alignItems:"center"
+    header: {
+        flexDirection: "row",
+        paddingHorizontal: "10%",
+        alignItems: "center"
     },
-    headerText:{
-        color:colors.quaternary,
-        maxWidth:"55%",
-        fontSize:15
+    headerText: {
+        color: colors.quaternary,
+        maxWidth: "55%",
+        fontSize: 15
     }
 })

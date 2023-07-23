@@ -98,11 +98,11 @@ export async function addExpense(item) {
         let fData = new FormData();
         fData.append('userID', item.userID);
         fData.append('name', item.name);
-        fData.append('date',JSON.stringify(item.date));
+        fData.append('date', JSON.stringify(item.date));
         fData.append('price', item.price);
-        fData.append('imageURI',item.imageURI?item.imageURI:null);
-        fData.append('location', item.location?JSON.stringify(item.location):null);
-        fData.append('address', item.address?item.address:null);
+        fData.append('imageURI', item.imageURI ? item.imageURI : null);
+        fData.append('location', item.location ? JSON.stringify(item.location) : null);
+        fData.append('address', item.address ? item.address : null);
 
         const result = await axios.post(`${url}addexpense.php`, fData).then(response => response.data);
 
@@ -113,5 +113,35 @@ export async function addExpense(item) {
     }
 }
 
+
+
+///////////////////////////////////////////////////////
+export async function allExpenses(userID) {
+    try {
+        let fData = new FormData();
+        fData.append('userID', userID);
+
+        const result = await axios.post(`${url}allexpenses.php`, fData).then(response => response.data);
+        return result;
+    } catch (error) {
+        return error.toString();
+    }
+}
+
+
+
+///////////////////////////////////////////////////////
+export async function getIdExpense(name, date) {
+    try {
+        let fData = new FormData();
+        fData.append('name', name);
+        fData.append('date', JSON.stringify(date));
+
+        const result = await axios.post(`${url}getidexpense.php`, fData).then(response => response.data);
+        return result;
+    } catch (error) {
+        return error.toString();
+    }
+}
 
 export default postUser;

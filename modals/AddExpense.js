@@ -8,7 +8,7 @@ import DatePicker from "./DatePicker";
 import ImagePicker from "../components/ImagePicker";
 import LocationPicker from '../components/LocationPicker'
 import { useEffect } from "react";
-import { addExpense } from "../utility/http";
+import { addExpense, getIdExpense } from "../utility/http";
 
 
 
@@ -51,7 +51,7 @@ export default function AddExpense(props) {
                 setError({ ...error, location: "Location has not yet been loaded !" });
             } else {
                 if (await addExpense({ userID: sharedData.user.id, ...item })===1) {
-                    sharedData.addExpense(item, true); //with argument true we do add not update
+                    sharedData.addExpense({id: await getIdExpense(item.name,item.date),userID: sharedData.user.id, ...item }, true); //with argument true we do add not update
                     if (props.redirect) { //if the addExpense is called from RecentExpenses, it will redirect it to AllExpenses
                         props.redirect()
                     }
