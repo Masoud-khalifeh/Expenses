@@ -1,12 +1,15 @@
 import { Text, View, StyleSheet, Modal, } from "react-native";
 import ButtonExpense from "../components/ButtonExpense";
 import { colors } from "../data/Colors";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ExpenseContextModule } from "../store/ExpenseContext";
 import Icon from "../components/Icon";
 import { deleteExpense } from "../utility/http";
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 export default function DeleteExpense() {
+    const [loading, setLoading] = useState(false);
     const sharedData = useContext(ExpenseContextModule);
 
     function UpdateHandler() {
@@ -16,16 +19,22 @@ export default function DeleteExpense() {
 
 
     async function deleteHandler() {
-        if (await deleteExpense(sharedData.deletedID)===1){
-            sharedData.deleteExpense();
-        }else{
-            alert("Error in recording information");
+        if (!loading) {
+            setLoading(true);
+            if (await deleteExpense(sharedData.deletedID) === 1) {
+                setLoading(false);
+                sharedData.deleteExpense();
+            } else {
+                alert("Error in recording information");
+            }
         }
-        
+
+
     }
 
     return (
         <Modal transparent={true} animationType="slide">
+            <Spinner visible={loading} textStyle={styles.spinnerTextStyle} />
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Delete or Update Expense</Text>

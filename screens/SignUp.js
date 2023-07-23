@@ -3,15 +3,19 @@ import { View, Text, StyleSheet, TextInput, Alert } from 'react-native';
 import { ExpenseContextModule } from '../store/ExpenseContext';
 import { colors } from '../data/Colors';
 import ButtonExpense from '../components/ButtonExpense';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import ErrorMessage from '../components/ErrorMessage';
 import postUser, { checkEmail, getID } from '../utility/http';
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 
 export default function Login({ navigation }) {
     const sharedData = useContext(ExpenseContextModule);
     const [user, setUser] = useState({ email: '', passWord: '', repeatPassWord: '', name: '' });
     const [error, setError] = useState({ email: "", name: "", password: "", repeatPassword: "" });
+    const [loading, setLoading] = useState(false);
+
 
 
 
@@ -49,29 +53,27 @@ export default function Login({ navigation }) {
 
 
 
-        if (user.email && user.passWord && user.name && isValidEmail(user.email) && user.passWord === user.repeatPassWord && isValidPassword(user.passWord)) {
-            const status=await checkEmail(user.email);
-            if ( status === 1) {
+        if (user.email && user.passWord && user.name && isValidEmail(user.email) && user.passWord === user.repeatPassWord && isValidPassword(user.passWord) && !loading) {
+            setLoading(true);
+            const status = await checkEmail(user.email);
+            if (status === 1) {
                 error = { ...error, email: "This email has already exists." }
             } else if (status === 0) {
-                if (await postUser(user.email, user.name, user.passWord)===1) {
+                if (await postUser(user.email, user.name, user.passWord) === 1) {
                     alert("Welcome! You registered successfully.");
                     setUser({ email: '', passWord: '', repeatPassWord: '', name: '' });
-                    sharedData.SignUp({id:await getID(user.email) ,...user});
+                    sharedData.SignUp({ id: await getID(user.email), ...user });
                     navigation.navigate('AllExpenses');
                 }
             } else {
                 alert("Error in recording information")
             }
-
-
-
-
+            setLoading(false);
         }
         setError(error);
     };
 
-   
+
     //to validate email
     const isValidEmail = (email) => {
         const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -98,7 +100,7 @@ export default function Login({ navigation }) {
 
     return (
         <View style={styles.container}>
-
+            <Spinner visible={loading} textStyle={styles.spinnerTextStyle} />
             <View style={styles.inputArea}>
                 <TextInput placeholder="Email" keyboardType="email-address" placeholderTextColor={colors.secondary} style={styles.input} name="email" value={user.email} onChangeText={(value) => changeHandler("email", value)} />
                 <ErrorMessage>{error.email}</ErrorMessage>

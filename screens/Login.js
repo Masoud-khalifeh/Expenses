@@ -5,6 +5,8 @@ import { ExpenseContextModule } from '../store/ExpenseContext';
 import { useContext, useState, } from 'react';
 import ErrorMessage from '../components/ErrorMessage';
 import { LoginUser } from '../utility/http';
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 
 
@@ -12,6 +14,8 @@ export default function Login({ navigation }) {
     const sharedData = useContext(ExpenseContextModule);
     const [user, setUser] = useState({ email: '', passWord: '' });
     const [error, setError] = useState([]);
+    const [loading, setLoading] = useState(false);
+
 
     function changeHandler(name, value) {
         setError({ email: "", password: "", general: "" })
@@ -22,9 +26,10 @@ export default function Login({ navigation }) {
 
 
         let error = {}
-        if (user.email && user.passWord && isValidEmail(user.email)) {
+        if (user.email && user.passWord && isValidEmail(user.email) && !loading) {
+            setLoading(true);
             const loggedUser = await LoginUser(user.email, user.passWord);
-            if (loggedUser ) {
+            if (loggedUser) {
                 sharedData.SignUp(loggedUser);
                 sharedData.loadExpenses(loggedUser.id);
                 navigation.navigate('AllExpenses');
@@ -32,7 +37,7 @@ export default function Login({ navigation }) {
                 error = { ...error, general: "Wrong Email or Password!" }
             }
             setUser({ email: '', passWord: '' });
-
+            setLoading(false);
         }
         if (!user.passWord) {
             error = { ...error, password: "Please Fill the Password." }
@@ -60,6 +65,7 @@ export default function Login({ navigation }) {
 
     return (
         <View style={styles.container}>
+            <Spinner visible={loading} textStyle={styles.spinnerTextStyle} />
             <View style={styles.error}>
                 <ErrorMessage>{error.general}</ErrorMessage>
             </View>

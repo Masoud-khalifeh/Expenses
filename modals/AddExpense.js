@@ -9,6 +9,7 @@ import ImagePicker from "../components/ImagePicker";
 import LocationPicker from '../components/LocationPicker'
 import { useEffect } from "react";
 import { addExpense, getIdExpense } from "../utility/http";
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 
@@ -16,7 +17,8 @@ export default function AddExpense(props) {
     const [item, setItem] = useState({
         name: "", date: new Date(), price: "", imageURI: "", location: "", address: ""
     });
-    const [error, setError] = useState({ name: "", price: "", location: "" })
+    const [error, setError] = useState({ name: "", price: "", location: "" });
+    const [loading, setLoading] = useState(false);
     const sharedData = useContext(ExpenseContextModule);
 
     useEffect(() => {
@@ -46,16 +48,18 @@ export default function AddExpense(props) {
     }
 
     async function submitHandler() {
-        if (item.name && item.price) { //check if the inputes are empty or not
+        if (item.name && item.price && !loading) { //check if the inputes are empty or not
             if (sharedData.locationLoading) {
                 setError({ ...error, location: "Location has not yet been loaded !" });
             } else {
-                if (await addExpense({ userID: sharedData.user.id, ...item })===1) {
-                    sharedData.addExpense({id: await getIdExpense(item.name,item.date),userID: sharedData.user.id, ...item }, true); //with argument true we do add not update
+                setLoading(true);
+                if (await addExpense({ userID: sharedData.user.id, ...item }) === 1) {
+                    sharedData.addExpense({ id: await getIdExpense(item.name, item.date), userID: sharedData.user.id, ...item }, true); //with argument true we do add not update
+                    setLoading(false);
                     if (props.redirect) { //if the addExpense is called from RecentExpenses, it will redirect it to AllExpenses
                         props.redirect()
                     }
-                }else {
+                } else {
                     alert("Error in recording information");
                 }
 
@@ -75,6 +79,7 @@ export default function AddExpense(props) {
 
     return (
         <Modal transparent={true} animationType="slide">
+            <Spinner visible={loading} textStyle={styles.spinnerTextStyle} />
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Add Expense</Text>

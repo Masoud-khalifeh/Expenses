@@ -9,13 +9,16 @@ import ErrorMessage from "../components/ErrorMessage";
 import ImagePicker from "../components/ImagePicker";
 import LocationPicker from '../components/LocationPicker';
 import { updateExpense } from "../utility/http";
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 
 export default function UpdateExpense() {
     const [item, setItem] = useState({
         name: "", date: new Date(), price: "", imageURI: "", location: "",
     });
-    const [error, setError] = useState({ name: "", price: "", location: "" })
+    const [error, setError] = useState({ name: "", price: "", location: "" });
+    const [loading, setLoading] = useState(false);
     const sharedData = useContext(ExpenseContextModule);
 
     useEffect(() => {
@@ -56,15 +59,17 @@ export default function UpdateExpense() {
 
 
     async function updateHandler() {
-        if (item.name && item.price) { //check if the inputes are empty or not
+        if (item.name && item.price && !loading) { //check if the inputes are empty or not
             if (sharedData.locationLoading) {
                 setError({ ...error, location: "Location has not been yet loaded !" });
             } else {
-                if (await updateExpense({...item, address:sharedData.updatedExpense.address,id:sharedData.updatedExpense.id,userID:sharedData.updatedExpense.userID}) === 1) {
+                setLoading(true);
+                if (await updateExpense({ ...item, address: sharedData.updatedExpense.address, id: sharedData.updatedExpense.id, userID: sharedData.updatedExpense.userID }) === 1) {
                     sharedData.addExpense(item, false); //with argument false we do update
                 } else {
                     alert("Error in recording information")
                 }
+                setLoading(false);
             }
         } else {
             if (!item.name && !item.price) {
@@ -79,6 +84,7 @@ export default function UpdateExpense() {
 
     return (
         <Modal transparent={true} animationType="slide">
+            <Spinner visible={loading} textStyle={styles.spinnerTextStyle} />
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Update Expense</Text>
