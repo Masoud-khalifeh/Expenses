@@ -58,7 +58,7 @@ export default function ExpenseContext({ children }) {
         const allArray=await allExpenses(id);
         const formated=[];
         allArray.map(item=>{
-            formated.push({...item,date:new Date(JSON.parse(item.date)),address:item.address==="null"?"":item.address,imageURI:item.imageURI==="null"? "":item.imageURI,location:item.location==="null"? "":item.location  }) 
+            formated.push({...item,date:new Date(JSON.parse(item.date)),address:item.address==="null"?"":item.address,imageURI:item.imageURI==="null"? "":item.imageURI,location:item.location==="null"? "":JSON.parse(item.location)  }) 
         })
         setExpense(formated)
     };
@@ -112,6 +112,7 @@ export default function ExpenseContext({ children }) {
 
     //
     function SignUp(user) {
+        setExpense([]);
         setUser(user)
     }
 

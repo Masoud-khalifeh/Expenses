@@ -144,4 +144,20 @@ export async function getIdExpense(name, date) {
     }
 }
 
+
+
+///////////////////////////////////////////////////////
+export async function deleteExpense(id) {
+    try {
+        let fData = new FormData();
+        fData.append('id', id);
+
+        const result = await axios.post(`${url}deleteexpense.php`, fData).then(response => response.data);
+        return result;
+    } catch (error) {
+        return error.toString();
+    }
+}
+
+
 export default postUser;

@@ -4,6 +4,7 @@ import { colors } from "../data/Colors";
 import { useContext } from "react";
 import { ExpenseContextModule } from "../store/ExpenseContext";
 import Icon from "../components/Icon";
+import { deleteExpense } from "../utility/http";
 
 export default function DeleteExpense() {
     const sharedData = useContext(ExpenseContextModule);
@@ -11,6 +12,16 @@ export default function DeleteExpense() {
     function UpdateHandler() {
         sharedData.getUpdatedExpense();// call the function to delete 
         sharedData.toggleModal(3); //closes the Delete or update Modal
+    }
+
+
+    async function deleteHandler() {
+        if (await deleteExpense(sharedData.deletedID)===1){
+            sharedData.deleteExpense();
+        }else{
+            alert("Error in recording information");
+        }
+        
     }
 
     return (
@@ -25,7 +36,7 @@ export default function DeleteExpense() {
                     <ButtonExpense primary={true} onPress={UpdateHandler}>Update</ButtonExpense>
                 </View>
                 <View style={styles.deleteArea}>
-                    <Icon onPress={sharedData.deleteExpense} color="red" size={40} name="trash" />
+                    <Icon onPress={deleteHandler} color="red" size={40} name="trash" />
                 </View>
             </View>
         </Modal>
@@ -37,8 +48,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.primary,
         marginTop: "13%",
-        borderWidth:2,
-        borderColor:"black",
+        borderWidth: 2,
+        borderColor: "black",
         borderRadius: 10,
         alignItems: "center",
         overflow: "hidden"
@@ -93,6 +104,6 @@ const styles = StyleSheet.create({
         borderColor: colors.quaternary,
         borderTopWidth: "3%",
         padding: "3%",
-        alignItems:"center"
+        alignItems: "center"
     }
 })
