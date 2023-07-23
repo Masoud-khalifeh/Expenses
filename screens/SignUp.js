@@ -50,9 +50,10 @@ export default function Login({ navigation }) {
 
 
         if (user.email && user.passWord && user.name && isValidEmail(user.email) && user.passWord === user.repeatPassWord) {
-            if (await checkEmail(user.email) === 1) {
+            const status=await checkEmail(user.email);
+            if ( status === 1) {
                 error = { ...error, email: "This email has already exists." }
-            } else if (await checkEmail(user.email) === 0) {
+            } else if (status === 0) {
                 if (await postUser(user.email, user.name, user.passWord)===1) {
                     alert("Welcome! You registered successfully.");
                     setUser({ email: '', passWord: '', repeatPassWord: '', name: '' });

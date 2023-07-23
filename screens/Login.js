@@ -18,27 +18,45 @@ export default function Login({ navigation }) {
         setUser({ ...user, [name]: name === "email" ? value.toLowerCase() : value })
     }
 
-    function submitHandler() {
-        LoginUser(user.email, user.passWord);
-        let error = {}
-        if (user.email && user.passWord) {
-            setUser({ email: '', passWord: '' })
-            if (sharedData.login(user)) {
-                navigation.navigate("AllExpenses")
-            } else {
-                error = { ...error, general: "Wrong Email or PassWord  !" }
-            }
+    async function submitHandler() {
 
-        } else if (user.passWord) {
+
+        let error = {}
+        if (user.email && user.passWord && isValidEmail(user.email)) {
+            const status = await LoginUser(user.email, user.passWord);
+            if (status ) {
+                alert("Welcome! ");
+                sharedData.SignUp(status);
+                navigation.navigate('AllExpenses');
+            } else {
+                error = { ...error, general: "Wrong Email or Password!" }
+            }
+            setUser({ email: '', passWord: '' });
+
+        }
+        if (!user.passWord) {
+            error = { ...error, password: "Please Fill the Password." }
+        }
+        if (!user.email) {
             error = { ...error, email: "Please Fill the Email." }
-        } else if (user.email) {
-            error = { ...error, password: "Please Fill the PassWord." }
-        } else {
-            error = { ...error, email: "Please Fill the Email.", password: "Please Fill the PassWord" }
+        } else if (!isValidEmail(user.email)) {
+            error = { ...error, email: "Email is not correct !" }
+        }
+        if (!user.email && !user.passWord) {
+            error = { ...error, email: "Please Fill the Email.", password: "Please Fill the Password" }
         }
         setError(error);
 
     }
+
+    //to validate email
+    const isValidEmail = (email) => {
+        const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+        return emailPattern.test(email);
+    };
+
+
+
 
     return (
         <View style={styles.container}>
@@ -100,7 +118,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
-    error:{
-        marginTop:"10%",
+    error: {
+        marginTop: "10%",
     }
 })

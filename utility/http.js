@@ -2,9 +2,8 @@ import { useContext } from 'react';
 import axios from 'axios';
 import * as Crypto from 'expo-crypto';
 
-let urlAddUser = "https://uiux-expert.de/api/adduser.php";
-const urlLogin = "https://uiux-expert.de/api/login.php";
-const urlCheckEmail = "https://uiux-expert.de/api/checkemail.php";
+
+const url = "https://uiux-expert.de/api/";
 
 
 async function hashPassword(password) {
@@ -27,7 +26,7 @@ async function postUser(email, name, password) {
         fData.append('name', name);
         fData.append('password', hashedPassword);
 
-        const results = await axios.post(urlAddUser, fData).then(response => JSON.parse(response.data));
+        const results = await axios.post(`${url}adduser.php`, fData).then(response => JSON.parse(response.data));
         return results
     } catch (error) {
         return error.toString();
@@ -45,14 +44,10 @@ export async function LoginUser(email, password) {
         fData.append('email', email);
         fData.append('password', hashedPassword);
 
-        const result = await axios.post(urlLogin, fData).then(response => response.data);
-        alert(result);
-        console.log(result);
-        return true;
+        const results = await axios.post(`${url}login.php`, fData).then(response => response.data);
+        return results;
     } catch (error) {
-        alert(error);
-        console.log(error);
-        return false;
+        return error.toString();
     }
 }
 
@@ -65,7 +60,7 @@ export async function checkEmail(email) {
         let fData = new FormData();
         fData.append('email', email);
 
-        const result = await axios.post(urlCheckEmail, fData).then(response => JSON.parse(response.data));
+        const result = await axios.post(`${url}checkemail.php`, fData).then(response => JSON.parse(response.data));
 
         return result;
     } catch (error) {
