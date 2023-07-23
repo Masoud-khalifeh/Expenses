@@ -8,27 +8,28 @@ import DatePicker from "./DatePicker";
 import ImagePicker from "../components/ImagePicker";
 import LocationPicker from '../components/LocationPicker'
 import { useEffect } from "react";
+import { addExpense } from "../utility/http";
 
 
 
 export default function AddExpense(props) {
     const [item, setItem] = useState({
-        name: "", date: new Date(), price: "", imageURI: "", location:"", address:""
+        name: "", date: new Date(), price: "", imageURI: "", location: "", address: ""
     });
-    const [error, setError] = useState({ name: "", price: "",location:"" })
+    const [error, setError] = useState({ name: "", price: "", location: "" })
     const sharedData = useContext(ExpenseContextModule);
 
-    useEffect(()=>{
+    useEffect(() => {
         sharedData.toogleLocation(false)
 
-    },[])
+    }, [])
 
-    useEffect(()=>{
-        setError({ name: "", price: "",location:"" })
-    },[sharedData.locationLoading])
+    useEffect(() => {
+        setError({ name: "", price: "", location: "" })
+    }, [sharedData.locationLoading])
 
     function changeHandler(itemName, value) {
-        setError({ name: "", price: "" ,location:""}); //by changing the input, the error messages will vanish
+        setError({ name: "", price: "", location: "" }); //by changing the input, the error messages will vanish
         setItem({ ...item, [itemName]: value }) //by changing the input, the state will update
     }
 
@@ -40,21 +41,27 @@ export default function AddExpense(props) {
         setItem({ ...item, imageURI: uri })
     }
 
-    function updateLocation(loc,address) {
-        setItem({ ...item, location: loc, address:address })
+    function updateLocation(loc, address) {
+        setItem({ ...item, location: loc, address: address })
     }
 
-    function submitHandler() {
+    async function submitHandler() {
         if (item.name && item.price) { //check if the inputes are empty or not
-            if(sharedData.locationLoading){
+            if (sharedData.locationLoading) {
                 setError({ ...error, location: "Location has not yet been loaded !" });
-            }else {
-                sharedData.addExpense(item, true); //with argument true we do add not update
-                if (props.redirect) { //if the addExpense is called from RecentExpenses, it will redirect it to AllExpenses
-                    props.redirect()
+            } else {
+                if (await addExpense({ userID: sharedData.user.id, ...item })===1) {
+                    sharedData.addExpense(item, true); //with argument true we do add not update
+                    if (props.redirect) { //if the addExpense is called from RecentExpenses, it will redirect it to AllExpenses
+                        props.redirect()
+                    }
+                }else {
+                    alert("Error in recording information");
                 }
+
+
             }
-            
+
         } else {
             if (!item.name && !item.price) {
                 setError({ name: "Please, Fill the Name !", price: "Please, Fill the Price !" })
@@ -164,11 +171,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center"
     },
-    image:{
-        height:"25%"
+    image: {
+        height: "25%"
     },
-    location:{
-        height:"23%",
-        marginBottom:"5%"
+    location: {
+        height: "23%",
+        marginBottom: "5%"
     }
 })

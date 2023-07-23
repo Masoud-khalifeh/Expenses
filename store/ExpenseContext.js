@@ -108,8 +108,6 @@ export default function ExpenseContext({ children }) {
         setUser("")
     }
 
-   console.log(user);
-
     return (
         <ExpenseContextModule.Provider value={{
             expense: expense, addExpense: addExpense, deleteExpense: deleteExpense, toggleModal: toggleModal, deletedID: deletedID, getDeletedId: getDeletedId,

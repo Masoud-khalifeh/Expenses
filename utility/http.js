@@ -89,4 +89,29 @@ export async function getID(email) {
 
 
 
+
+
+
+///////////////////////////////////////////////////////
+export async function addExpense(item) {
+    try {
+        let fData = new FormData();
+        fData.append('userID', item.userID);
+        fData.append('name', item.name);
+        fData.append('date',JSON.stringify(item.date));
+        fData.append('price', item.price);
+        fData.append('imageURI',item.imageURI?item.imageURI:null);
+        fData.append('location', item.location?JSON.stringify(item.location):null);
+        fData.append('address', item.address?item.address:null);
+
+        const result = await axios.post(`${url}addexpense.php`, fData).then(response => response.data);
+
+        return result;
+    } catch (error) {
+
+        return error.toString();
+    }
+}
+
+
 export default postUser;
