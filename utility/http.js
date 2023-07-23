@@ -70,4 +70,23 @@ export async function checkEmail(email) {
 
 
 
+
+///////////////////////////////////////////////////////
+export async function getID(email) {
+    try {
+
+
+        let fData = new FormData();
+        fData.append('email', email);
+
+        const result = await axios.post(`${url}getid.php`, fData).then(response => JSON.parse(response.data));
+
+        return result;
+    } catch (error) {
+        return error.toString();
+    }
+}
+
+
+
 export default postUser;

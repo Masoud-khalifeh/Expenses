@@ -108,7 +108,7 @@ export default function ExpenseContext({ children }) {
         setUser("")
     }
 
-   
+   console.log(user);
 
     return (
         <ExpenseContextModule.Provider value={{

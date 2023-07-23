@@ -5,7 +5,7 @@ import { colors } from '../data/Colors';
 import ButtonExpense from '../components/ButtonExpense';
 import { useContext, useEffect, useState } from 'react';
 import ErrorMessage from '../components/ErrorMessage';
-import postUser, { checkEmail } from '../utility/http';
+import postUser, { checkEmail, getID } from '../utility/http';
 
 
 export default function Login({ navigation }) {
@@ -57,7 +57,7 @@ export default function Login({ navigation }) {
                 if (await postUser(user.email, user.name, user.passWord)===1) {
                     alert("Welcome! You registered successfully.");
                     setUser({ email: '', passWord: '', repeatPassWord: '', name: '' });
-                    sharedData.SignUp(user);
+                    sharedData.SignUp({id:await getID(user.email) ,...user});
                     navigation.navigate('AllExpenses');
                 }
             } else {
