@@ -49,7 +49,7 @@ export default function Login({ navigation }) {
 
 
 
-        if (user.email && user.passWord && user.name && isValidEmail(user.email) && user.passWord === user.repeatPassWord) {
+        if (user.email && user.passWord && user.name && isValidEmail(user.email) && user.passWord === user.repeatPassWord && isValidPassword(user.passWord)) {
             const status=await checkEmail(user.email);
             if ( status === 1) {
                 error = { ...error, email: "This email has already exists." }

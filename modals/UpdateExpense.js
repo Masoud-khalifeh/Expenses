@@ -7,7 +7,8 @@ import { useEffect } from "react";
 import DatePicker from "./DatePicker";
 import ErrorMessage from "../components/ErrorMessage";
 import ImagePicker from "../components/ImagePicker";
-import LocationPicker from '../components/LocationPicker'
+import LocationPicker from '../components/LocationPicker';
+import { updateExpense } from "../utility/http";
 
 
 export default function UpdateExpense() {
@@ -54,12 +55,16 @@ export default function UpdateExpense() {
     }
 
 
-    function updateHandler() {
+    async function updateHandler() {
         if (item.name && item.price) { //check if the inputes are empty or not
             if (sharedData.locationLoading) {
                 setError({ ...error, location: "Location has not been yet loaded !" });
             } else {
-                sharedData.addExpense(item, false); //with argument false we do update
+                if (await updateExpense({...item, address:sharedData.updatedExpense.address,id:sharedData.updatedExpense.id,userID:sharedData.updatedExpense.userID}) === 1) {
+                    sharedData.addExpense(item, false); //with argument false we do update
+                } else {
+                    alert("Error in recording information")
+                }
             }
         } else {
             if (!item.name && !item.price) {
@@ -170,11 +175,11 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center"
     },
-    image:{
-        height:"25%"
+    image: {
+        height: "25%"
     },
-    location:{
-        height:"23%",
-        marginBottom:"5%"
+    location: {
+        height: "23%",
+        marginBottom: "5%"
     }
 })
