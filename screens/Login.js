@@ -25,7 +25,6 @@ export default function Login({ navigation }) {
         if (user.email && user.passWord && isValidEmail(user.email)) {
             const loggedUser = await LoginUser(user.email, user.passWord);
             if (loggedUser ) {
-                alert("Welcome! ");
                 sharedData.SignUp(loggedUser);
                 sharedData.loadExpenses(loggedUser.id);
                 navigation.navigate('AllExpenses');
