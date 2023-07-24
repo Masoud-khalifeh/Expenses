@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { createContext, useState } from "react";
-import uuid from 'react-native-uuid';
 import { allExpenses } from "../utility/http";
 
 export const ExpenseContextModule = createContext();
@@ -10,7 +9,6 @@ export default function ExpenseContext({ children }) {
     const [deletedID, setDeletedID] = useState("");
     const [updatedExpense, setUpdatedExpense] = useState("");
     const [modal, setModal] = useState({ add: false, delete: false, update: false, showDate: false, map: false });
-    const [showDate, setShowDate] = useState(true);
     const [shortlistExpense, setshortListExpense] = useState([]);
     const [user, setUser] = useState([]);
     const [locationLoading, setLocationLoading] = useState(false);
@@ -125,7 +123,7 @@ export default function ExpenseContext({ children }) {
     return (
         <ExpenseContextModule.Provider value={{
             expense: expense, addExpense: addExpense, deleteExpense: deleteExpense, toggleModal: toggleModal, deletedID: deletedID, getDeletedId: getDeletedId,
-            modal: modal, getUpdatedExpense: getUpdatedExpense, updatedExpense: updatedExpense, showDate: showDate, sumPrices: sumPrices,
+            modal: modal, getUpdatedExpense: getUpdatedExpense, updatedExpense: updatedExpense,  sumPrices: sumPrices,
             shortlistExpense: shortlistExpense, user: user, SignUp: SignUp, signout: signout, locationLoading: locationLoading, loadExpenses: loadExpenses,
             toogleLocation: toogleLocation,
         }}>

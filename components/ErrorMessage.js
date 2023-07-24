@@ -1,5 +1,4 @@
 import { StyleSheet,  View, Text } from "react-native";
-import { } from "react-native";
 import { colors } from "../data/Colors";
 
 export default function ErrorMessage({ children }) {
