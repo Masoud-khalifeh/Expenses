@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TextInput, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { colors } from '../data/Colors';
 import ButtonExpense from '../components/ButtonExpense';
 import { ExpenseContextModule } from '../store/ExpenseContext';
@@ -64,22 +64,25 @@ export default function Login({ navigation }) {
 
 
     return (
-        <View style={styles.container}>
-            <Spinner visible={loading} textStyle={styles.spinnerTextStyle} />
-            <View style={styles.error}>
-                <ErrorMessage>{error.general}</ErrorMessage>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={styles.container}>
+                <Spinner visible={loading} textStyle={styles.spinnerTextStyle} />
+                <View style={styles.error}>
+                    <ErrorMessage>{error.general}</ErrorMessage>
+                </View>
+                <View style={styles.inputArea}>
+                    <TextInput placeholder="Email" keyboardType="email-address" placeholderTextColor={colors.secondary} style={styles.input} name="email" value={user.email} onChangeText={(value) => changeHandler("email", value)} />
+                    <ErrorMessage>{error.email}</ErrorMessage>
+                    <TextInput secureTextEntry={true} placeholder="Password" placeholderTextColor={colors.secondary} style={styles.input} name="passWord" value={user.passWord} onChangeText={(value) => changeHandler("passWord", value)} />
+                    <ErrorMessage>{error.password}</ErrorMessage>
+                </View>
+                <View style={styles.buttonView}>
+                    <ButtonExpense primary={true} onPress={submitHandler}>Login</ButtonExpense>
+                    <ButtonExpense primary={false} onPress={() => navigation.navigate('SignUp')}>new? Create an <Text style={styles.bottomText}>Account</Text> </ButtonExpense>
+                </View>
             </View>
-            <View style={styles.inputArea}>
-                <TextInput placeholder="Email" keyboardType="email-address" placeholderTextColor={colors.secondary} style={styles.input} name="email" value={user.email} onChangeText={(value) => changeHandler("email", value)} />
-                <ErrorMessage>{error.email}</ErrorMessage>
-                <TextInput secureTextEntry={true} placeholder="Password" placeholderTextColor={colors.secondary} style={styles.input} name="passWord" value={user.passWord} onChangeText={(value) => changeHandler("passWord", value)} />
-                <ErrorMessage>{error.password}</ErrorMessage>
-            </View>
-            <View style={styles.buttonView}>
-                <ButtonExpense primary={true} onPress={submitHandler}>Login</ButtonExpense>
-                <ButtonExpense primary={false} onPress={() => navigation.navigate('SignUp')}>new? Create an <Text style={styles.bottomText}>Account</Text> </ButtonExpense>
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
+
     )
 }
 

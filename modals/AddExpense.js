@@ -1,4 +1,4 @@
-import { TextInput, Text, View, StyleSheet, Modal, Pressable } from "react-native";
+import { TextInput, Text, View, StyleSheet, Modal, Pressable, Keyboard, TouchableWithoutFeedback } from "react-native";
 import ButtonExpense from "../components/ButtonExpense";
 import { colors } from "../data/Colors";
 import { useState, useContext } from "react";
@@ -80,6 +80,7 @@ export default function AddExpense(props) {
     return (
         <Modal transparent={true} animationType="slide">
             <Spinner visible={loading} textStyle={styles.spinnerTextStyle} />
+            <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss()}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Add Expense</Text>
@@ -107,6 +108,7 @@ export default function AddExpense(props) {
                     <ButtonExpense primary={true} onPress={submitHandler}>Add</ButtonExpense>
                 </View>
             </View>
+            </TouchableWithoutFeedback>
         </Modal>
     )
 }

@@ -1,4 +1,4 @@
-import { TextInput, Text, View, StyleSheet, Modal, Pressable } from "react-native";
+import { TextInput, Text, View, StyleSheet, Modal, Pressable,  Keyboard, TouchableWithoutFeedback } from "react-native";
 import ButtonExpense from "../components/ButtonExpense";
 import { colors } from "../data/Colors";
 import { useState, useContext } from "react";
@@ -85,6 +85,7 @@ export default function UpdateExpense() {
     return (
         <Modal transparent={true} animationType="slide">
             <Spinner visible={loading} textStyle={styles.spinnerTextStyle} />
+            <TouchableWithoutFeedback onPress={()=> Keyboard.dismiss()}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerText}>Update Expense</Text>
@@ -112,6 +113,7 @@ export default function UpdateExpense() {
                     <ButtonExpense primary={true} onPress={updateHandler}>Update</ButtonExpense>
                 </View>
             </View>
+            </TouchableWithoutFeedback>
         </Modal>
     )
 }

@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, FlatList } from "react-native";
+import { Text, View, StyleSheet, FlatList, } from "react-native";
 import SingleExpense from "../components/SingleExpense";
 import { colors } from "../data/Colors"
 import { useContext, useLayoutEffect } from "react";

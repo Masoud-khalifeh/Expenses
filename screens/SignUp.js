@@ -1,5 +1,5 @@
 
-import { View, Text, StyleSheet, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { ExpenseContextModule } from '../store/ExpenseContext';
 import { colors } from '../data/Colors';
 import ButtonExpense from '../components/ButtonExpense';
@@ -99,23 +99,25 @@ export default function Login({ navigation }) {
 
 
     return (
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
-            <Spinner visible={loading} textStyle={styles.spinnerTextStyle} />
-            <View style={styles.inputArea}>
-                <TextInput placeholder="Email" keyboardType="email-address" placeholderTextColor={colors.secondary} style={styles.input} name="email" value={user.email} onChangeText={(value) => changeHandler("email", value)} />
-                <ErrorMessage>{error.email}</ErrorMessage>
-                <TextInput placeholder="Name" placeholderTextColor={colors.secondary} style={styles.input} name="name" value={user.name} onChangeText={(value) => changeHandler("name", value)} />
-                <ErrorMessage>{error.name}</ErrorMessage>
-                <TextInput secureTextEntry={true} placeholder="Password" placeholderTextColor={colors.secondary} style={styles.input} name="passWord" value={user.passWord} onChangeText={(value) => changeHandler("passWord", value)} />
-                <ErrorMessage>{error.password}</ErrorMessage>
-                <TextInput secureTextEntry={true} placeholder="Repeat Password" placeholderTextColor={colors.secondary} style={styles.input} name="repeatPassWord" value={user.repeatPassWord} onChangeText={(value) => changeHandler("repeatPassWord", value)} />
-                <ErrorMessage>{error.repeatPassword}</ErrorMessage>
-            </View>
-            <View style={styles.buttonView}>
-                <ButtonExpense primary={true} onPress={submitHandler}>Sign Up</ButtonExpense>
-                <ButtonExpense primary={false} onPress={() => navigation.navigate('Login')}><Text style={styles.topText}> Already Have an Account? <Text style={styles.bottomText}>Login</Text> </Text></ButtonExpense>
-            </View>
+                <Spinner visible={loading} textStyle={styles.spinnerTextStyle} />
+                <View style={styles.inputArea}>
+                    <TextInput placeholder="Email" keyboardType="email-address" placeholderTextColor={colors.secondary} style={styles.input} name="email" value={user.email} onChangeText={(value) => changeHandler("email", value)} />
+                    <ErrorMessage>{error.email}</ErrorMessage>
+                    <TextInput placeholder="Name" placeholderTextColor={colors.secondary} style={styles.input} name="name" value={user.name} onChangeText={(value) => changeHandler("name", value)} />
+                    <ErrorMessage>{error.name}</ErrorMessage>
+                    <TextInput secureTextEntry={true} placeholder="Password" placeholderTextColor={colors.secondary} style={styles.input} name="passWord" value={user.passWord} onChangeText={(value) => changeHandler("passWord", value)} />
+                    <ErrorMessage>{error.password}</ErrorMessage>
+                    <TextInput secureTextEntry={true} placeholder="Repeat Password" placeholderTextColor={colors.secondary} style={styles.input} name="repeatPassWord" value={user.repeatPassWord} onChangeText={(value) => changeHandler("repeatPassWord", value)} />
+                    <ErrorMessage>{error.repeatPassword}</ErrorMessage>
+                </View>
+                <View style={styles.buttonView}>
+                    <ButtonExpense primary={true} onPress={submitHandler}>Sign Up</ButtonExpense>
+                    <ButtonExpense primary={false} onPress={() => navigation.navigate('Login')}><Text style={styles.topText}> Already Have an Account? <Text style={styles.bottomText}>Login</Text> </Text></ButtonExpense>
+                </View>
         </View>
+        </TouchableWithoutFeedback>
     )
 }
 
