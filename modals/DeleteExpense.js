@@ -22,11 +22,12 @@ export default function DeleteExpense() {
         if (!loading) {
             setLoading(true);
             if (await deleteExpense(sharedData.deletedID) === 1) {
-                setLoading(false);
+                
                 sharedData.deleteExpense();
             } else {
                 alert("Error in recording information");
             }
+            setLoading(false);
         }
 
 

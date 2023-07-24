@@ -63,7 +63,7 @@ export default function AddExpense(props) {
                     alert("Error in recording information");
                 }
 
-
+                setLoading(false);
             }
 
         } else {

@@ -4,9 +4,10 @@ import Icon from './Icon'
 
 
 //define a pressable area as a reusable Button
-export default function ButtonExpense({ children, primary, onPress, icon, textSize=17 }) {
+export default function ButtonExpense({ children, primary, onPress, icon, textSize = 17 }) {
 
     //set Icon in the button if there is a prop of {icon}
+    //this props is an object containing name, size and color
     const iconShow = () => {
         return (
             <View style={styles.icon} >
@@ -18,7 +19,7 @@ export default function ButtonExpense({ children, primary, onPress, icon, textSi
     return (
         <Pressable style={[styles.container, { backgroundColor: primary ? colors.secondary : colors.primary }]} onPress={onPress}>
             {icon && iconShow()}
-            <Text style={[styles.text,{fontSize:textSize}]}>{children}</Text>
+            <Text style={[styles.text, { fontSize: textSize }]}>{children}</Text>
         </Pressable>
     )
 }
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     icon: {
         width: "100%",
         height: "40%",
-        alignItems:"center",
-        justifyContent:"center"
+        alignItems: "center",
+        justifyContent: "center"
     }
 })

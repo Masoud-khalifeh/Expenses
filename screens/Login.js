@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback }
 import { colors } from '../data/Colors';
 import ButtonExpense from '../components/ButtonExpense';
 import { ExpenseContextModule } from '../store/ExpenseContext';
-import { useContext, useState, } from 'react';
+import { useContext, useEffect, useState, } from 'react';
 import ErrorMessage from '../components/ErrorMessage';
 import { LoginUser } from '../utility/http';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -78,7 +78,7 @@ export default function Login({ navigation }) {
                 </View>
                 <View style={styles.buttonView}>
                     <ButtonExpense primary={true} onPress={submitHandler}>Login</ButtonExpense>
-                    <ButtonExpense primary={false} onPress={() => navigation.navigate('SignUp')}>new? Create an <Text style={styles.bottomText}>Account</Text> </ButtonExpense>
+                    <ButtonExpense primary={false} onPress={() =>{navigation.navigate('SignUp'),setError([])}}>new? Create an <Text style={styles.bottomText}>Account</Text> </ButtonExpense>
                 </View>
             </View>
         </TouchableWithoutFeedback>
