@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         height: "40%",
         padding:"10%",
         justifyContent: 'space-around',
-        borderRadius: '5%',
+        borderRadius: 5,
         alignItems: 'center'
     },
 

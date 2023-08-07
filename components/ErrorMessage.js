@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         justifyContent:"flex-start",
         marginTop:0,
         alignItems:"flex-start",
-        borderRadius:"5%",
+        borderRadius:5,
     },
     text: {
         color: colors.prime,

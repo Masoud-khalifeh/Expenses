@@ -26,7 +26,7 @@ async function postUser(email, name, password) {
         fData.append('name', name);
         fData.append('password', hashedPassword);
 
-        const results = await axios.post(`${url}adduser.php`, fData).then(response => JSON.parse(response.data));
+        const results = await axios.post(`${url}add_user.php`, fData).then(response => JSON.parse(response.data));
         return results
     } catch (error) {
         return error.toString();
@@ -60,7 +60,7 @@ export async function checkEmail(email) {
         let fData = new FormData();
         fData.append('email', email);
 
-        const result = await axios.post(`${url}checkemail.php`, fData).then(response => JSON.parse(response.data));
+        const result = await axios.post(`${url}check_email.php`, fData).then(response => JSON.parse(response.data));
 
         return result;
     } catch (error) {
@@ -79,7 +79,7 @@ export async function getID(email) {
         let fData = new FormData();
         fData.append('email', email);
 
-        const result = await axios.post(`${url}getid.php`, fData).then(response => JSON.parse(response.data));
+        const result = await axios.post(`${url}get_user_id.php`, fData).then(response => JSON.parse(response.data));
 
         return result;
     } catch (error) {
@@ -104,7 +104,7 @@ export async function addExpense(item) {
         fData.append('location', item.location ? JSON.stringify(item.location) : null);
         fData.append('address', item.address ? item.address : null);
 
-        const result = await axios.post(`${url}addexpense.php`, fData).then(response => response.data);
+        const result = await axios.post(`${url}add_expense.php`, fData).then(response => response.data);
 
         return result;
     } catch (error) {
@@ -121,7 +121,7 @@ export async function allExpenses(userID) {
         let fData = new FormData();
         fData.append('userID', userID);
 
-        const result = await axios.post(`${url}allexpenses.php`, fData).then(response => response.data);
+        const result = await axios.post(`${url}all_expenses.php`, fData).then(response => response.data);
         return result;
     } catch (error) {
         return error.toString();
@@ -137,7 +137,7 @@ export async function getIdExpense(name, date) {
         fData.append('name', name);
         fData.append('date', JSON.stringify(date));
 
-        const result = await axios.post(`${url}getidexpense.php`, fData).then(response => response.data);
+        const result = await axios.post(`${url}get_id_expense.php`, fData).then(response => response.data);
         return result;
     } catch (error) {
         return error.toString();
@@ -152,7 +152,7 @@ export async function deleteExpense(id) {
         let fData = new FormData();
         fData.append('id', id);
 
-        const result = await axios.post(`${url}deleteexpense.php`, fData).then(response => response.data);
+        const result = await axios.post(`${url}delete_expense.php`, fData).then(response => response.data);
         return result;
     } catch (error) {
         return error.toString();
@@ -175,7 +175,7 @@ export async function updateExpense(item) {
         fData.append('location', item.location ? JSON.stringify(item.location) : null);
         fData.append('address', item.address ? item.address : null);
 
-        const result = await axios.post(`${url}updateexpense.php`, fData).then(response => response.data);
+        const result = await axios.post(`${url}update_expense.php`, fData).then(response => response.data);
         return result;
     } catch (error) {
         return error.toString();
